@@ -7,9 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D0160F031DDE3132004A9E0F /* SyncJSONSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0160F021DDE3132004A9E0F /* SyncJSONSpec.swift */; };
 		D089BF741DDCD72200ADF618 /* JSONMapping.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D089BF6A1DDCD72200ADF618 /* JSONMapping.framework */; };
-		D089BF791DDCD72200ADF618 /* JSONMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D089BF781DDCD72200ADF618 /* JSONMappingTests.swift */; };
+		D089BF791DDCD72200ADF618 /* ToJSONSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D089BF781DDCD72200ADF618 /* ToJSONSpec.swift */; };
 		D089BF7B1DDCD72200ADF618 /* JSONMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = D089BF6D1DDCD72200ADF618 /* JSONMapping.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D089BF851DDCD7A300ADF618 /* NSManagedObject+JSONMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = D089BF841DDCD7A300ADF618 /* NSManagedObject+JSONMapping.swift */; };
+		D089BF871DDCD87000ADF618 /* NSPropertyDescription+JSONMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = D089BF861DDCD87000ADF618 /* NSPropertyDescription+JSONMapping.swift */; };
+		D089BF891DDCDA1900ADF618 /* NSAttributeDescription+JSONMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = D089BF881DDCDA1900ADF618 /* NSAttributeDescription+JSONMapping.swift */; };
+		D089BF8C1DDCDB2500ADF618 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = D089BF8A1DDCDB2500ADF618 /* Cartfile */; };
+		D089BF8D1DDCDB2500ADF618 /* Cartfile.private in Resources */ = {isa = PBXBuildFile; fileRef = D089BF8B1DDCDB2500ADF618 /* Cartfile.private */; };
+		D089BF941DDCDB9B00ADF618 /* RemoteMapping.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D089BF911DDCDB9A00ADF618 /* RemoteMapping.framework */; };
+		D089BF961DDCDBB300ADF618 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D089BF8F1DDCDB9A00ADF618 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D089BF971DDCDBB300ADF618 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D089BF901DDCDB9A00ADF618 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D089BF981DDCDBB300ADF618 /* RemoteMapping.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D089BF911DDCDB9A00ADF618 /* RemoteMapping.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D089BF9A1DDCE16C00ADF618 /* NSManagedObjectContext+JSONMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = D089BF991DDCE16C00ADF618 /* NSManagedObjectContext+JSONMapping.swift */; };
+		D089BF9C1DDCE20D00ADF618 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D089BF9B1DDCE20D00ADF618 /* SwiftyJSON.framework */; };
+		D0AF2EBF1DDCEA06002436CC /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D089BF8F1DDCDB9A00ADF618 /* Nimble.framework */; };
+		D0AF2EC01DDCEA06002436CC /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D089BF901DDCDB9A00ADF618 /* Quick.framework */; };
+		D0AF2EC41DDCEA9C002436CC /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D0AF2EC21DDCEA9C002436CC /* DataModel.xcdatamodeld */; };
+		D0AF2EC61DDCEB9C002436CC /* AttributeDescriptionSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AF2EC51DDCEB9C002436CC /* AttributeDescriptionSpec.swift */; };
+		D0AF2EC91DDCECEE002436CC /* CoreDataStack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0AF2EC81DDCECEE002436CC /* CoreDataStack.framework */; };
+		D0AF2ECB1DDCEDB0002436CC /* AttributeTypeSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AF2ECA1DDCEDB0002436CC /* AttributeTypeSpec.swift */; };
+		D0AF2ECD1DDCF1DF002436CC /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AF2ECC1DDCF1DF002436CC /* Object.swift */; };
+		D0AF2ECE1DDCF4B1002436CC /* CoreDataStack.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0AF2EC81DDCECEE002436CC /* CoreDataStack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0AF2ECF1DDCF4B1002436CC /* SwiftyJSON.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D089BF9B1DDCE20D00ADF618 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D0AF2ED11DDCFA8B002436CC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AF2ED01DDCFA8B002436CC /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -22,13 +44,47 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		D089BF951DDCDBAB00ADF618 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D0AF2ECE1DDCF4B1002436CC /* CoreDataStack.framework in CopyFiles */,
+				D0AF2ECF1DDCF4B1002436CC /* SwiftyJSON.framework in CopyFiles */,
+				D089BF961DDCDBB300ADF618 /* Nimble.framework in CopyFiles */,
+				D089BF971DDCDBB300ADF618 /* Quick.framework in CopyFiles */,
+				D089BF981DDCDBB300ADF618 /* RemoteMapping.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		D0160F021DDE3132004A9E0F /* SyncJSONSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncJSONSpec.swift; sourceTree = "<group>"; };
 		D089BF6A1DDCD72200ADF618 /* JSONMapping.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JSONMapping.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D089BF6D1DDCD72200ADF618 /* JSONMapping.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSONMapping.h; sourceTree = "<group>"; };
 		D089BF6E1DDCD72200ADF618 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D089BF731DDCD72200ADF618 /* JSONMappingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JSONMappingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D089BF781DDCD72200ADF618 /* JSONMappingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONMappingTests.swift; sourceTree = "<group>"; };
+		D089BF781DDCD72200ADF618 /* ToJSONSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToJSONSpec.swift; sourceTree = "<group>"; };
 		D089BF7A1DDCD72200ADF618 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D089BF841DDCD7A300ADF618 /* NSManagedObject+JSONMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+JSONMapping.swift"; sourceTree = "<group>"; };
+		D089BF861DDCD87000ADF618 /* NSPropertyDescription+JSONMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPropertyDescription+JSONMapping.swift"; sourceTree = "<group>"; };
+		D089BF881DDCDA1900ADF618 /* NSAttributeDescription+JSONMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributeDescription+JSONMapping.swift"; sourceTree = "<group>"; };
+		D089BF8A1DDCDB2500ADF618 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		D089BF8B1DDCDB2500ADF618 /* Cartfile.private */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile.private; sourceTree = "<group>"; };
+		D089BF8F1DDCDB9A00ADF618 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/iOS/Nimble.framework; sourceTree = "<group>"; };
+		D089BF901DDCDB9A00ADF618 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
+		D089BF911DDCDB9A00ADF618 /* RemoteMapping.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RemoteMapping.framework; path = Carthage/Build/iOS/RemoteMapping.framework; sourceTree = "<group>"; };
+		D089BF991DDCE16C00ADF618 /* NSManagedObjectContext+JSONMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+JSONMapping.swift"; sourceTree = "<group>"; };
+		D089BF9B1DDCE20D00ADF618 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
+		D0AF2EC31DDCEA9C002436CC /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		D0AF2EC51DDCEB9C002436CC /* AttributeDescriptionSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeDescriptionSpec.swift; sourceTree = "<group>"; };
+		D0AF2EC81DDCECEE002436CC /* CoreDataStack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreDataStack.framework; path = Carthage/Build/iOS/CoreDataStack.framework; sourceTree = "<group>"; };
+		D0AF2ECA1DDCEDB0002436CC /* AttributeTypeSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeTypeSpec.swift; sourceTree = "<group>"; };
+		D0AF2ECC1DDCF1DF002436CC /* Object.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
+		D0AF2ED01DDCFA8B002436CC /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +92,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D089BF9C1DDCE20D00ADF618 /* SwiftyJSON.framework in Frameworks */,
+				D089BF941DDCDB9B00ADF618 /* RemoteMapping.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,7 +101,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0AF2EC91DDCECEE002436CC /* CoreDataStack.framework in Frameworks */,
 				D089BF741DDCD72200ADF618 /* JSONMapping.framework in Frameworks */,
+				D0AF2EBF1DDCEA06002436CC /* Nimble.framework in Frameworks */,
+				D0AF2EC01DDCEA06002436CC /* Quick.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +114,9 @@
 		D089BF601DDCD72200ADF618 = {
 			isa = PBXGroup;
 			children = (
+				D089BF8A1DDCDB2500ADF618 /* Cartfile */,
+				D089BF8B1DDCDB2500ADF618 /* Cartfile.private */,
+				D089BF8E1DDCDB7A00ADF618 /* Dependencies */,
 				D089BF6C1DDCD72200ADF618 /* JSONMapping */,
 				D089BF771DDCD72200ADF618 /* JSONMappingTests */,
 				D089BF6B1DDCD72200ADF618 /* Products */,
@@ -72,6 +136,10 @@
 			isa = PBXGroup;
 			children = (
 				D089BF6D1DDCD72200ADF618 /* JSONMapping.h */,
+				D089BF991DDCE16C00ADF618 /* NSManagedObjectContext+JSONMapping.swift */,
+				D089BF841DDCD7A300ADF618 /* NSManagedObject+JSONMapping.swift */,
+				D089BF881DDCDA1900ADF618 /* NSAttributeDescription+JSONMapping.swift */,
+				D089BF861DDCD87000ADF618 /* NSPropertyDescription+JSONMapping.swift */,
 				D089BF6E1DDCD72200ADF618 /* Info.plist */,
 			);
 			path = JSONMapping;
@@ -80,10 +148,36 @@
 		D089BF771DDCD72200ADF618 /* JSONMappingTests */ = {
 			isa = PBXGroup;
 			children = (
-				D089BF781DDCD72200ADF618 /* JSONMappingTests.swift */,
+				D0AF2EC11DDCEA83002436CC /* Model */,
+				D089BF781DDCD72200ADF618 /* ToJSONSpec.swift */,
+				D0160F021DDE3132004A9E0F /* SyncJSONSpec.swift */,
+				D0AF2EC51DDCEB9C002436CC /* AttributeDescriptionSpec.swift */,
+				D0AF2ECA1DDCEDB0002436CC /* AttributeTypeSpec.swift */,
 				D089BF7A1DDCD72200ADF618 /* Info.plist */,
 			);
 			path = JSONMappingTests;
+			sourceTree = "<group>";
+		};
+		D089BF8E1DDCDB7A00ADF618 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				D0AF2EC81DDCECEE002436CC /* CoreDataStack.framework */,
+				D089BF9B1DDCE20D00ADF618 /* SwiftyJSON.framework */,
+				D089BF8F1DDCDB9A00ADF618 /* Nimble.framework */,
+				D089BF901DDCDB9A00ADF618 /* Quick.framework */,
+				D089BF911DDCDB9A00ADF618 /* RemoteMapping.framework */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		D0AF2EC11DDCEA83002436CC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D0AF2EC21DDCEA9C002436CC /* DataModel.xcdatamodeld */,
+				D0AF2ECC1DDCF1DF002436CC /* Object.swift */,
+				D0AF2ED01DDCFA8B002436CC /* User.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +219,7 @@
 				D089BF6F1DDCD72200ADF618 /* Sources */,
 				D089BF701DDCD72200ADF618 /* Frameworks */,
 				D089BF711DDCD72200ADF618 /* Resources */,
+				D089BF951DDCDBAB00ADF618 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -149,6 +244,7 @@
 					D089BF691DDCD72200ADF618 = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = KMC5HK5ZC7;
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 					};
 					D089BF721DDCD72200ADF618 = {
@@ -181,6 +277,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D089BF8C1DDCDB2500ADF618 /* Cartfile in Resources */,
+				D089BF8D1DDCDB2500ADF618 /* Cartfile.private in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,6 +296,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D089BF851DDCD7A300ADF618 /* NSManagedObject+JSONMapping.swift in Sources */,
+				D089BF871DDCD87000ADF618 /* NSPropertyDescription+JSONMapping.swift in Sources */,
+				D089BF9A1DDCE16C00ADF618 /* NSManagedObjectContext+JSONMapping.swift in Sources */,
+				D089BF891DDCDA1900ADF618 /* NSAttributeDescription+JSONMapping.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,7 +307,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D089BF791DDCD72200ADF618 /* JSONMappingTests.swift in Sources */,
+				D0AF2ECD1DDCF1DF002436CC /* Object.swift in Sources */,
+				D0AF2EC61DDCEB9C002436CC /* AttributeDescriptionSpec.swift in Sources */,
+				D0AF2ED11DDCFA8B002436CC /* User.swift in Sources */,
+				D089BF791DDCD72200ADF618 /* ToJSONSpec.swift in Sources */,
+				D0AF2EC41DDCEA9C002436CC /* DataModel.xcdatamodeld in Sources */,
+				D0160F031DDE3132004A9E0F /* SyncJSONSpec.swift in Sources */,
+				D0AF2ECB1DDCEDB0002436CC /* AttributeTypeSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,18 +430,24 @@
 		D089BF7F1DDCD72200ADF618 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = KMC5HK5ZC7;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = JSONMapping/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.justinmakaila.JSONMapping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -341,12 +455,17 @@
 		D089BF801DDCD72200ADF618 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = KMC5HK5ZC7;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = JSONMapping/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -360,7 +479,12 @@
 		D089BF821DDCD72200ADF618 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = KMC5HK5ZC7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = JSONMappingTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.justinmakaila.JSONMappingTests;
@@ -372,7 +496,12 @@
 		D089BF831DDCD72200ADF618 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = KMC5HK5ZC7;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = JSONMappingTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.justinmakaila.JSONMappingTests;
@@ -400,6 +529,7 @@
 				D089BF801DDCD72200ADF618 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D089BF811DDCD72200ADF618 /* Build configuration list for PBXNativeTarget "JSONMappingTests" */ = {
 			isa = XCConfigurationList;
@@ -408,8 +538,22 @@
 				D089BF831DDCD72200ADF618 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D0AF2EC21DDCEA9C002436CC /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D0AF2EC31DDCEA9C002436CC /* DataModel.xcdatamodel */,
+			);
+			currentVersion = D0AF2EC31DDCEA9C002436CC /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D089BF611DDCD72200ADF618 /* Project object */;
 }

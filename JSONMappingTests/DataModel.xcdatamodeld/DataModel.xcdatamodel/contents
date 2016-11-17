@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Object" representedClassName=".Object" syncable="YES">
+        <attribute name="boolean" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="decimal" optional="YES" attributeType="Decimal" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="double" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="float" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="int16" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="int32" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="int64" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="string" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="transformable" optional="YES" attributeType="Transformable" syncable="YES"/>
+    </entity>
+    <entity name="User" representedClassName=".User" syncable="YES">
+        <attribute name="birthdate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="genderValue" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="remotePropertyName" value="gender"/>
+            </userInfo>
+        </attribute>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="friends" toMany="YES" deletionRule="Nullify" destinationEntity="User" syncable="YES"/>
+        <relationship name="significantOther" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="significantOther" inverseEntity="User" syncable="YES"/>
+        <userInfo>
+            <entry key="localPrimaryKey" value="name"/>
+        </userInfo>
+    </entity>
+    <elements>
+        <element name="Object" positionX="-63" positionY="-18" width="128" height="210"/>
+        <element name="User" positionX="-45" positionY="90" width="128" height="120"/>
+    </elements>
+</model>

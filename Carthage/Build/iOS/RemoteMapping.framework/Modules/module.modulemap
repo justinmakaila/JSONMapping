@@ -1,0 +1,10 @@
+framework module RemoteMapping {
+  umbrella header "RemoteMapping.h"
+
+  export *
+  module * { export * }
+}
+
+module RemoteMapping.Swift {
+    header "RemoteMapping-Swift.h"
+}

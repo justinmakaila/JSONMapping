@@ -1,0 +1,10 @@
+framework module CoreDataStack {
+  umbrella header "CoreDataStack.h"
+
+  export *
+  module * { export * }
+}
+
+module CoreDataStack.Swift {
+    header "CoreDataStack-Swift.h"
+}
