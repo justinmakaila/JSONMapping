@@ -21,7 +21,6 @@
 		D089BF971DDCDBB300ADF618 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D089BF901DDCDB9A00ADF618 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D089BF981DDCDBB300ADF618 /* RemoteMapping.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D089BF911DDCDB9A00ADF618 /* RemoteMapping.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D089BF9A1DDCE16C00ADF618 /* NSManagedObjectContext+JSONMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = D089BF991DDCE16C00ADF618 /* NSManagedObjectContext+JSONMapping.swift */; };
-		D089BF9C1DDCE20D00ADF618 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D089BF9B1DDCE20D00ADF618 /* SwiftyJSON.framework */; };
 		D0AF2EBF1DDCEA06002436CC /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D089BF8F1DDCDB9A00ADF618 /* Nimble.framework */; };
 		D0AF2EC01DDCEA06002436CC /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D089BF901DDCDB9A00ADF618 /* Quick.framework */; };
 		D0AF2EC41DDCEA9C002436CC /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D0AF2EC21DDCEA9C002436CC /* DataModel.xcdatamodeld */; };
@@ -30,7 +29,6 @@
 		D0AF2ECB1DDCEDB0002436CC /* AttributeTypeSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AF2ECA1DDCEDB0002436CC /* AttributeTypeSpec.swift */; };
 		D0AF2ECD1DDCF1DF002436CC /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AF2ECC1DDCF1DF002436CC /* Object.swift */; };
 		D0AF2ECE1DDCF4B1002436CC /* CoreDataStack.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0AF2EC81DDCECEE002436CC /* CoreDataStack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D0AF2ECF1DDCF4B1002436CC /* SwiftyJSON.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D089BF9B1DDCE20D00ADF618 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0AF2ED11DDCFA8B002436CC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AF2ED01DDCFA8B002436CC /* User.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,7 +50,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				D0AF2ECE1DDCF4B1002436CC /* CoreDataStack.framework in CopyFiles */,
-				D0AF2ECF1DDCF4B1002436CC /* SwiftyJSON.framework in CopyFiles */,
 				D089BF961DDCDBB300ADF618 /* Nimble.framework in CopyFiles */,
 				D089BF971DDCDBB300ADF618 /* Quick.framework in CopyFiles */,
 				D089BF981DDCDBB300ADF618 /* RemoteMapping.framework in CopyFiles */,
@@ -78,7 +75,6 @@
 		D089BF901DDCDB9A00ADF618 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/iOS/Quick.framework; sourceTree = "<group>"; };
 		D089BF911DDCDB9A00ADF618 /* RemoteMapping.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RemoteMapping.framework; path = Carthage/Build/iOS/RemoteMapping.framework; sourceTree = "<group>"; };
 		D089BF991DDCE16C00ADF618 /* NSManagedObjectContext+JSONMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+JSONMapping.swift"; sourceTree = "<group>"; };
-		D089BF9B1DDCE20D00ADF618 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		D0AF2EC31DDCEA9C002436CC /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		D0AF2EC51DDCEB9C002436CC /* AttributeDescriptionSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeDescriptionSpec.swift; sourceTree = "<group>"; };
 		D0AF2EC81DDCECEE002436CC /* CoreDataStack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreDataStack.framework; path = Carthage/Build/iOS/CoreDataStack.framework; sourceTree = "<group>"; };
@@ -92,7 +88,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D089BF9C1DDCE20D00ADF618 /* SwiftyJSON.framework in Frameworks */,
 				D089BF941DDCDB9B00ADF618 /* RemoteMapping.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -162,7 +157,6 @@
 			isa = PBXGroup;
 			children = (
 				D0AF2EC81DDCECEE002436CC /* CoreDataStack.framework */,
-				D089BF9B1DDCE20D00ADF618 /* SwiftyJSON.framework */,
 				D089BF8F1DDCDB9A00ADF618 /* Nimble.framework */,
 				D089BF901DDCDB9A00ADF618 /* Quick.framework */,
 				D089BF911DDCDB9A00ADF618 /* RemoteMapping.framework */,
