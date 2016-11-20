@@ -16,8 +16,6 @@
 		D089BF851DDCD7A300ADF618 /* NSManagedObject+JSONMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = D089BF841DDCD7A300ADF618 /* NSManagedObject+JSONMapping.swift */; };
 		D089BF871DDCD87000ADF618 /* NSPropertyDescription+JSONMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = D089BF861DDCD87000ADF618 /* NSPropertyDescription+JSONMapping.swift */; };
 		D089BF891DDCDA1900ADF618 /* NSAttributeDescription+JSONMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = D089BF881DDCDA1900ADF618 /* NSAttributeDescription+JSONMapping.swift */; };
-		D089BF8C1DDCDB2500ADF618 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = D089BF8A1DDCDB2500ADF618 /* Cartfile */; };
-		D089BF8D1DDCDB2500ADF618 /* Cartfile.private in Resources */ = {isa = PBXBuildFile; fileRef = D089BF8B1DDCDB2500ADF618 /* Cartfile.private */; };
 		D089BF941DDCDB9B00ADF618 /* RemoteMapping.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D089BF911DDCDB9A00ADF618 /* RemoteMapping.framework */; };
 		D089BF961DDCDBB300ADF618 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D089BF8F1DDCDB9A00ADF618 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D089BF971DDCDBB300ADF618 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D089BF901DDCDB9A00ADF618 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -283,8 +281,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D089BF8C1DDCDB2500ADF618 /* Cartfile in Resources */,
-				D089BF8D1DDCDB2500ADF618 /* Cartfile.private in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,12 +449,14 @@
 				);
 				INFOPLIST_FILE = JSONMapping/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.justinmakaila.JSONMapping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -478,11 +476,13 @@
 				);
 				INFOPLIST_FILE = JSONMapping/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.justinmakaila.JSONMapping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
