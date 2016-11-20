@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="InvalidJSONObject" representedClassName=".InvalidJSONObject" syncable="YES">
+        <attribute name="string" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Object" representedClassName=".Object" syncable="YES">
         <attribute name="boolean" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -30,5 +33,6 @@
     <elements>
         <element name="Object" positionX="-63" positionY="-18" width="128" height="210"/>
         <element name="User" positionX="-45" positionY="90" width="128" height="120"/>
+        <element name="InvalidJSONObject" positionX="-45" positionY="90" width="128" height="60"/>
     </elements>
 </model>

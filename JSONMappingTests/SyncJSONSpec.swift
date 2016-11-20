@@ -15,6 +15,58 @@ class SyncJSONSpec: QuickSpec {
             dataStack = CoreDataStack(modelName: "DataModel", bundle: bundle, storeType: .inMemory)
         }
         
+        describe("NSManagedObjectContext") {
+            let birthdate = Date()
+            let dateFormatter = ISO8601DateFormatter()
+            let jsonCollection: [JSONObject] = [
+                [
+                    "name": "Justin",
+                    "gender": "male",
+                    "birthdate": dateFormatter.string(from: birthdate)
+                ],
+                [
+                    "name": "Paige",
+                    "gender": "female",
+                    "birthdate": dateFormatter.string(from: birthdate)
+                ]
+            ]
+            
+            it ("can sync an entire JSON collection") {
+                let changes = dataStack.mainContext.update(entityNamed: "User", withJSON: jsonCollection)
+                expect(changes.count).to(equal(2))
+            }
+            
+            describe("inserting duplicates") {
+                let duplicateJSONCollection: [JSONObject] = [
+                    [
+                        "name": "Justin",
+                        "gender": "male",
+                        "birthdate": dateFormatter.string(from: birthdate)
+                    ],
+                    [
+                        "name": "Justin",
+                        "gender": "female",
+                        "birthdate": dateFormatter.string(from: birthdate)
+                    ],
+                ]
+                
+                it ("will not insert duplicates") {
+                    let changes = dataStack.mainContext.update(entityNamed: "User", withJSON: duplicateJSONCollection)
+                    
+                    expect(changes.count).to(equal(1))
+                }
+                
+                it("will overwrite changes in previous versions with duplicates") {
+                    let changes = dataStack.mainContext.update(entityNamed: "User", withJSON: duplicateJSONCollection)
+                    
+                    let newUser = changes.first as? User
+                    
+                    expect(newUser).toNot(beNil())
+                    expect(newUser?.gender.rawValue).to(equal(Gender.female.rawValue))
+                }
+            }
+        }
+        
         describe("NSManagedObject sync with JSON") {
             var user: User!
             let dateFormatter = ISO8601DateFormatter()
@@ -125,6 +177,31 @@ class SyncJSONSpec: QuickSpec {
                 
                 expect(user.friends.count).to(equal(1))
                 expect(user.friends.first).to(equal(luci))
+            }
+            
+            describe("NSManagedObject subclass") {
+                it("can reject JSON merges") {
+                    let object = InvalidJSONObject(context: dataStack.mainContext)
+                    
+                    object.sync(withJSON: [
+                        "string": "this is a test string"
+                    ])
+                    
+                    expect(object.string).to(beNil())
+                }
+                
+                it("can be forced to accept JSON merges") {
+                    let object = InvalidJSONObject(context: dataStack.mainContext)
+                    
+                    object.sync(
+                        withJSON: [
+                            "string": "this is a test string"
+                        ],
+                        force: true
+                    )
+                    
+                    expect(object.string).to(equal("this is a test string"))
+                }
             }
         }
     }

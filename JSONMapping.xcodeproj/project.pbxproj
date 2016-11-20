@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D0160F031DDE3132004A9E0F /* SyncJSONSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0160F021DDE3132004A9E0F /* SyncJSONSpec.swift */; };
+		D0160F071DDE6646004A9E0F /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0160F061DDE6646004A9E0F /* StringExtensions.swift */; };
+		D0160F091DDE683F004A9E0F /* InvalidJSONObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0160F081DDE683F004A9E0F /* InvalidJSONObject.swift */; };
 		D089BF741DDCD72200ADF618 /* JSONMapping.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D089BF6A1DDCD72200ADF618 /* JSONMapping.framework */; };
 		D089BF791DDCD72200ADF618 /* ToJSONSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D089BF781DDCD72200ADF618 /* ToJSONSpec.swift */; };
 		D089BF7B1DDCD72200ADF618 /* JSONMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = D089BF6D1DDCD72200ADF618 /* JSONMapping.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -30,6 +32,8 @@
 		D0AF2ECD1DDCF1DF002436CC /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AF2ECC1DDCF1DF002436CC /* Object.swift */; };
 		D0AF2ECE1DDCF4B1002436CC /* CoreDataStack.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D0AF2EC81DDCECEE002436CC /* CoreDataStack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0AF2ED11DDCFA8B002436CC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AF2ED01DDCFA8B002436CC /* User.swift */; };
+		D0D586C51DE2328100D72F96 /* NSEntityDescription+JSONMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D586C41DE2328100D72F96 /* NSEntityDescription+JSONMapping.swift */; };
+		D0D586C71DE249AD00D72F96 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D586C61DE249AD00D72F96 /* JSON.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +64,8 @@
 
 /* Begin PBXFileReference section */
 		D0160F021DDE3132004A9E0F /* SyncJSONSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncJSONSpec.swift; sourceTree = "<group>"; };
+		D0160F061DDE6646004A9E0F /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		D0160F081DDE683F004A9E0F /* InvalidJSONObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvalidJSONObject.swift; sourceTree = "<group>"; };
 		D089BF6A1DDCD72200ADF618 /* JSONMapping.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JSONMapping.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D089BF6D1DDCD72200ADF618 /* JSONMapping.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSONMapping.h; sourceTree = "<group>"; };
 		D089BF6E1DDCD72200ADF618 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -81,6 +87,8 @@
 		D0AF2ECA1DDCEDB0002436CC /* AttributeTypeSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeTypeSpec.swift; sourceTree = "<group>"; };
 		D0AF2ECC1DDCF1DF002436CC /* Object.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
 		D0AF2ED01DDCFA8B002436CC /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		D0D586C41DE2328100D72F96 /* NSEntityDescription+JSONMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSEntityDescription+JSONMapping.swift"; sourceTree = "<group>"; };
+		D0D586C61DE249AD00D72F96 /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,7 +139,10 @@
 			isa = PBXGroup;
 			children = (
 				D089BF6D1DDCD72200ADF618 /* JSONMapping.h */,
+				D0D586C61DE249AD00D72F96 /* JSON.swift */,
+				D0160F061DDE6646004A9E0F /* StringExtensions.swift */,
 				D089BF991DDCE16C00ADF618 /* NSManagedObjectContext+JSONMapping.swift */,
+				D0D586C41DE2328100D72F96 /* NSEntityDescription+JSONMapping.swift */,
 				D089BF841DDCD7A300ADF618 /* NSManagedObject+JSONMapping.swift */,
 				D089BF881DDCDA1900ADF618 /* NSAttributeDescription+JSONMapping.swift */,
 				D089BF861DDCD87000ADF618 /* NSPropertyDescription+JSONMapping.swift */,
@@ -170,6 +181,7 @@
 				D0AF2EC21DDCEA9C002436CC /* DataModel.xcdatamodeld */,
 				D0AF2ECC1DDCF1DF002436CC /* Object.swift */,
 				D0AF2ED01DDCFA8B002436CC /* User.swift */,
+				D0160F081DDE683F004A9E0F /* InvalidJSONObject.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -291,7 +303,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D089BF851DDCD7A300ADF618 /* NSManagedObject+JSONMapping.swift in Sources */,
+				D0D586C71DE249AD00D72F96 /* JSON.swift in Sources */,
 				D089BF871DDCD87000ADF618 /* NSPropertyDescription+JSONMapping.swift in Sources */,
+				D0160F071DDE6646004A9E0F /* StringExtensions.swift in Sources */,
+				D0D586C51DE2328100D72F96 /* NSEntityDescription+JSONMapping.swift in Sources */,
 				D089BF9A1DDCE16C00ADF618 /* NSManagedObjectContext+JSONMapping.swift in Sources */,
 				D089BF891DDCDA1900ADF618 /* NSAttributeDescription+JSONMapping.swift in Sources */,
 			);
@@ -303,6 +318,7 @@
 			files = (
 				D0AF2ECD1DDCF1DF002436CC /* Object.swift in Sources */,
 				D0AF2EC61DDCEB9C002436CC /* AttributeDescriptionSpec.swift in Sources */,
+				D0160F091DDE683F004A9E0F /* InvalidJSONObject.swift in Sources */,
 				D0AF2ED11DDCFA8B002436CC /* User.swift in Sources */,
 				D089BF791DDCD72200ADF618 /* ToJSONSpec.swift in Sources */,
 				D0AF2EC41DDCEA9C002436CC /* DataModel.xcdatamodeld in Sources */,

@@ -24,7 +24,7 @@ extension Dictionary {
 }
 
 extension NSManagedObjectContext {
-    func upsert(json: JSONObject, inEntity entity: NSEntityDescription, withPrimaryKey primaryKey: String) -> NSManagedObject {
+    public func upsert(json: JSONObject, inEntity entity: NSEntityDescription, withPrimaryKey primaryKey: String, dateFormatter: JSONDateFormatter? = nil) -> NSManagedObject {
         guard let entityName = entity.name else { fatalError() }
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
@@ -40,21 +40,21 @@ extension NSManagedObjectContext {
         let object = result
             ?? NSEntityDescription.insertNewObject(forEntityName: entityName, into: self)
         
-        object.sync(withJSON: json)
+        object.sync(withJSON: json, dateFormatter: dateFormatter)
         
         return object
     }
     
-    func update(entityNamed entityName: String, withJSON json: [JSONObject], parent: NSManagedObject? = nil, predicate: NSPredicate? = nil) -> [NSManagedObject] {
+    public func update(entityNamed entityName: String, withJSON json: [JSONObject], dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil, predicate: NSPredicate? = nil) -> [NSManagedObject] {
         guard let entityDescription = NSEntityDescription.entity(forEntityName: entityName, in: self)
         else {
             return []
         }
         
-        return update(entity: entityDescription, withJSON: json, parent: parent, predicate: predicate)
+        return update(entity: entityDescription, withJSON: json, dateFormatter: dateFormatter, parent: parent, predicate: predicate)
     }
     
-    func update(entity: NSEntityDescription, withJSON json: [JSONObject], parent: NSManagedObject? = nil, predicate: NSPredicate? = nil) -> [NSManagedObject] {
+    public func update(entity: NSEntityDescription, withJSON json: [JSONObject], dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil, predicate: NSPredicate? = nil) -> [NSManagedObject] {
         let shouldLookForParent = ((parent == nil) && (predicate == nil))
         
         var finalPredicate = predicate
@@ -73,12 +73,12 @@ extension NSManagedObjectContext {
         var changes: [NSManagedObject] = []
         changes += inserts.map { json in
             let object = NSEntityDescription.insertNewObject(forEntityName: entity.name!, into: self)
-            object.sync(withJSON: json)
+            object.sync(withJSON: json, dateFormatter: dateFormatter)
             return object
         }
 
         changes += updates.map { (object, json) in
-            object.sync(withJSON: json)
+            object.sync(withJSON: json, dateFormatter: dateFormatter)
             return object
         }
         
@@ -168,7 +168,7 @@ extension NSManagedObjectContext {
     /// Detects changes between the local entity collection and the supplied JSON array based on the local and remote
     /// primary keys. Returns a tuple of updates (an array of `NSManagedObject` and `JSON` tuples), and inserts
     /// (JSON objects that do not have a local counterpart).
-    func detectChanges(inEntity entityName: String, withJSON json: [JSONObject], localPrimaryKey: String, remotePrimaryKey: String, predicate: NSPredicate? = nil) -> (updates: [(NSManagedObject, JSONObject)], inserts: [JSONObject]) {
+    public func detectChanges(inEntity entityName: String, withJSON json: [JSONObject], localPrimaryKey: String, remotePrimaryKey: String, predicate: NSPredicate? = nil) -> (updates: [(NSManagedObject, JSONObject)], inserts: [JSONObject]) {
         let localObjectIDIndex = objectIDs(inEntity: entityName, withAttribute: localPrimaryKey, predicate: predicate)
         let existingRemoteIDs = Set(localObjectIDIndex.keys)
         

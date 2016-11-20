@@ -9,39 +9,8 @@ func += <KeyType, ValueType> (lhs: inout Dictionary<KeyType, ValueType>, rhs: Di
     }
 }
 
-public typealias JSONObject = [String: Any]
 
-public protocol JSONDateFormatter {
-    func string(from: Date) -> String
-    func date(from: String) -> Date?
-}
-
-extension DateFormatter: JSONDateFormatter { }
-
-@available(iOS 10.0, *)
-extension ISO8601DateFormatter: JSONDateFormatter { }
-
-/// Represents relationships for JSON serialization
-public enum RelationshipType: String {
-    /// Don't include any relationship
-    case none = "none"
-    /// Include embedded objects
-    case embedded = "embedded"
-    /// Include refrences by primary key
-    case reference = "reference"
-}
-
-extension NSEntityDescription {
-    var parentRelationship: NSRelationshipDescription? {
-        return relationships
-            .filter { $0.destinationEntity?.name == name && !$0.isToMany }
-            .first
-    }
-}
-
-
-/// To JSON methods
-public extension NSManagedObject {
+extension JSONRepresentable where Self: NSManagedObject, Self: JSONValidator {
     /// Serializes a `NSManagedObject` to a JSONObject, using the remote properties.
     ///
     /// - Parameters:
@@ -50,7 +19,7 @@ public extension NSManagedObject {
     ///     - excludeKeys: The names of properties to be removed. Should be the name of the property in your data model,
     ///                    not the remote property name.
     ///
-    func toJSON(dateFormatter: JSONDateFormatter, relationshipType: RelationshipType = .embedded, parent: NSManagedObject? = nil, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
+    public func toJSON(dateFormatter: JSONDateFormatter, relationshipType: RelationshipType = .embedded, parent: NSManagedObject? = nil, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
         return jsonObjectForProperties(
             entity.remoteProperties,
             dateFormatter: dateFormatter,
@@ -70,7 +39,7 @@ public extension NSManagedObject {
     ///     - excludeKeys: The names of properties to be removed. Should be the name of the property in your data model,
     ///                    not the remote property name.
     ///
-    func toChangedJSON(dateFormatter: JSONDateFormatter, relationshipType: RelationshipType = .embedded, parent: NSManagedObject? = nil, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
+    public func toChangedJSON(dateFormatter: JSONDateFormatter, relationshipType: RelationshipType = .embedded, parent: NSManagedObject? = nil, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
         let changedPropertyKeys: Set<String> = Set(self.changedValues().keys)
         let remoteProperties = entity.remoteProperties.filter { changedPropertyKeys.contains($0.name) }
         
@@ -92,14 +61,17 @@ public extension NSManagedObject {
     ///                      no dates will be processed from the JSON.
     ///     - parent: The parent of the object.
     ///     - force: Flag to force merge the JSON
-    func sync(withJSON json: JSONObject, dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil, force: Bool = false) {
-        /// TODO: Build a selector and check if this class implements this selector, returning the value or defaulting to false
-        let isValid = true
-        
-        if isValid || force {
+    public func sync(withJSON json: JSONObject, dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil, force: Bool = false) {
+        if isValid(json: json) || force {
             sync(scalarValuesWithJSON: json, dateFormatter: dateFormatter)
-            sync(relationshipsWithJSON: json, parent: parent)
+            sync(relationshipsWithJSON: json, dateFormatter: dateFormatter, parent: parent)
         }
+    }
+}
+
+extension NSManagedObject: JSONRepresentable, JSONValidator {
+    open func isValid(json: JSONObject) -> Bool {
+        return true
     }
 }
 
@@ -116,27 +88,36 @@ private extension NSManagedObject {
         }
     }
     
-    func sync(relationshipsWithJSON json: JSONObject, parent: NSManagedObject? = nil) {
+    func sync(relationshipsWithJSON json: JSONObject, dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil) {
         entity.remoteRelationships
             .forEach { relationship in
-                let jsonValue = json[relationship.remotePropertyName]
+                let remotePropertyName = relationship.remotePropertyName
+                var jsonValue = json[remotePropertyName]
                 
                 /// TODO: Check if the class conforms to some `transform{remotePropertyName}JSON(json :JSONObject)`
                 ///       selector. If so, set `jsonValue` to the transformed value.
+                let selectorName = "transform" + remotePropertyName.capitalizingFirstLetter() + "JSON:"
+                let transformJSONSelector = Selector((selectorName))
+                if responds(to: transformJSONSelector) {
+                    let returnValue = perform(transformJSONSelector, with: jsonValue)
+                    if let transformedJSON = returnValue?.takeUnretainedValue() as? JSONObject {
+                        jsonValue = transformedJSON
+                    }
+                }
                 
                 if relationship.isToMany {
                     if let json = jsonValue as? [JSONObject] {
-                        sync(toManyRelationship: relationship, withJSON: json, parent: parent)
+                        sync(toManyRelationship: relationship, withJSON: json, dateFormatter: dateFormatter, parent: parent)
                     }
                 } else {
                     if let json = jsonValue as? JSONObject {
-                        sync(toOneRelationship: relationship, withJSON: json)
+                        sync(toOneRelationship: relationship, withJSON: json, dateFormatter: dateFormatter)
                     }
                 }
             }
     }
     
-    func sync(toOneRelationship relationship: NSRelationshipDescription, withJSON json: JSONObject) {
+    func sync(toOneRelationship relationship: NSRelationshipDescription, withJSON json: JSONObject, dateFormatter: JSONDateFormatter? = nil) {
         guard let managedObjectContext = managedObjectContext,
             let destinationEntity = relationship.destinationEntity,
             let destinationEntityName = destinationEntity.name,
@@ -147,22 +128,22 @@ private extension NSManagedObject {
         
         if let remotePrimaryKey = json[destinationEntity.remotePrimaryKeyName] as? String {
             setValue(
-                managedObjectContext.upsert(json: json, inEntity: destinationEntity, withPrimaryKey: remotePrimaryKey),
+                managedObjectContext.upsert(json: json, inEntity: destinationEntity, withPrimaryKey: remotePrimaryKey, dateFormatter: dateFormatter),
                 forKey: relationship.name
             )
         } else {
             guard let object = value(forKey: relationship.name) as? NSManagedObject
             else {
                 let object = NSEntityDescription.insertNewObject(forEntityName: destinationEntityName, into: managedObjectContext)
-                object.sync(withJSON: json)
+                object.sync(withJSON: json, dateFormatter: dateFormatter)
                 return setValue(object, forKey: relationship.name)
             }
             
-            object.sync(withJSON: json)
+            object.sync(withJSON: json, dateFormatter: dateFormatter)
         }
     }
     
-    func sync(toManyRelationship relationship: NSRelationshipDescription, withJSON json: [JSONObject], parent: NSManagedObject? = nil) {
+    func sync(toManyRelationship relationship: NSRelationshipDescription, withJSON json: [JSONObject], dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil) {
         guard let managedObjectContext = managedObjectContext,
             let destinationEntity = relationship.destinationEntity,
             let destinationEntityName = destinationEntity.name
@@ -184,6 +165,7 @@ private extension NSManagedObject {
             let changes = managedObjectContext.update(
                 entityNamed: destinationEntityName,
                 withJSON: json,
+                dateFormatter: dateFormatter,
                 parent: self,
                 predicate: destinationEntityPredicate
             )
