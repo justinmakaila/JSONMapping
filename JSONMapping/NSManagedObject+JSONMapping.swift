@@ -77,10 +77,12 @@ private extension NSManagedObject {
         entity.remoteAttributes
             .forEach { attribute in
                 if let jsonValue = parseJSON(json: json, propertyDescription: attribute) {
-                    setValue(
-                        attribute.value(usingRemoteValue: jsonValue, dateFormatter: dateFormatter),
-                        forKey: attribute.name
-                    )
+                    let attributeValue = attribute.value(usingRemoteValue: jsonValue, dateFormatter: dateFormatter)
+                    if let attributeValue = attributeValue {
+                        setValue(attributeValue, forKey: attribute.name)
+                    } else if attribute.isOptional {
+                        setValue(attributeValue, forKey: attribute.name)
+                    }
                 }
             }
     }
@@ -88,6 +90,27 @@ private extension NSManagedObject {
     func sync(relationshipsWithJSON json: JSONObject, dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil) {
         entity.remoteRelationships
             .forEach { relationship in
+                if let jsonValue = parseJSON(json: json, propertyDescription: relationship) {
+                    if relationship.isToMany {
+                        if let collection = jsonValue as? [JSONObject] {
+                            sync(toManyRelationship: relationship, withJSON: collection, dateFormatter: dateFormatter, parent: parent)
+                        } else if let primaryKeyCollection = jsonValue as? [String] {
+                            /// TODO: Find and insert objects via primary key
+                        } else if relationship.isOptional {
+                            setValue(nil, forKey: relationship.name)
+                        }
+                    } else {
+                        if let object = jsonValue as? JSONObject {
+                            sync(toOneRelationship: relationship, withJSON: object, dateFormatter: dateFormatter)
+                        } else if let primaryKey = jsonValue as? String {
+                            /// TODO Find and insert an object via primary key
+                        } else if relationship.isOptional {
+                            setValue(nil, forKey: relationship.name)
+                        }
+                    }
+                }
+                
+                
                 let jsonValue = parseJSON(json: json, propertyDescription: relationship)
                 if relationship.isToMany {
                     if let json = jsonValue as? [JSONObject] {
@@ -303,22 +326,5 @@ private extension NSManagedObject {
         }
         
         return includeNilValues ? NSNull() : nil
-    }
-    
-    /// Gets a `NSAttributeDescription` matching `key`, or nil.
-    func attributeDescription(forRemoteKey key: String) -> NSAttributeDescription? {
-        var foundAttributeDescription: NSAttributeDescription?
-        
-        for (_, propertyDescription) in entity.properties.enumerated() {
-            if let attributeDescription = propertyDescription as? NSAttributeDescription {
-                let remoteKey = attributeDescription.remotePropertyName
-                
-                if remoteKey == key || attributeDescription.name == key {
-                    foundAttributeDescription = attributeDescription
-                }
-            }
-        }
-        
-        return foundAttributeDescription
     }
 }
