@@ -3,6 +3,9 @@
     <entity name="InvalidJSONObject" representedClassName=".InvalidJSONObject" syncable="YES">
         <attribute name="string" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="JSONTransformObject" representedClassName=".JSONTransformObject" syncable="YES">
+        <attribute name="customString" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Object" representedClassName=".Object" syncable="YES">
         <attribute name="boolean" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -31,8 +34,9 @@
         </userInfo>
     </entity>
     <elements>
+        <element name="InvalidJSONObject" positionX="-45" positionY="90" width="128" height="60"/>
         <element name="Object" positionX="-63" positionY="-18" width="128" height="210"/>
         <element name="User" positionX="-45" positionY="90" width="128" height="120"/>
-        <element name="InvalidJSONObject" positionX="-45" positionY="90" width="128" height="60"/>
+        <element name="JSONTransformObject" positionX="-45" positionY="90" width="128" height="60"/>
     </elements>
 </model>

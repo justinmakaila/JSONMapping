@@ -86,7 +86,7 @@ class SyncJSONSpec: QuickSpec {
             it ("can sync with JSON scalar values") {
                 let date = Date()
                 let customDateFormatter = DateFormatter()
-                customDateFormatter.dateFormat = "YYYY-MM-DD'T'hh:mm:ss.sssZ"
+                customDateFormatter.dateFormat = "YYYY-MM-DD'T'hh:mm:ss.SSSZ"
                 let birthdateString = customDateFormatter.string(from: date)
                 
                 let json: JSONObject = [
@@ -201,6 +201,21 @@ class SyncJSONSpec: QuickSpec {
                     )
                     
                     expect(object.string).to(equal("this is a test string"))
+                }
+                
+                it ("can parse custom relationships from the JSON into itself") {
+                    let json: JSONObject = [
+                        "strings": [
+                            "custom": "custom string",
+                            "debug": "debug string"
+                        ]
+                    ]
+                    
+                    let object = JSONTransformObject(context: dataStack.mainContext)
+                    object.sync(withJSON: json)
+                    
+                    expect(object.customString).toNot(beNil())
+                    expect(object.customString).to(equal("custom string"))
                 }
             }
         }

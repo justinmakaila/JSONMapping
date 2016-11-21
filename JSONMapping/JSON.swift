@@ -29,6 +29,10 @@ public protocol JSONValidator {
     func isValid(json: JSONObject) -> Bool
 }
 
+public protocol JSONParser {
+    func parseJSON(json: JSONObject, localKey: String, remoteKey: String) -> Any?
+}
+
 public protocol JSONRepresentable {
     func toJSON(dateFormatter: JSONDateFormatter, relationshipType: RelationshipType, parent: NSManagedObject?, excludeKeys: Set<String>, includeNilValues: Bool) -> JSONObject
     func toChangedJSON(dateFormatter: JSONDateFormatter, relationshipType: RelationshipType, parent: NSManagedObject?, excludeKeys: Set<String>, includeNilValues: Bool) -> JSONObject

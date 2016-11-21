@@ -10,6 +10,7 @@
 		D0160F031DDE3132004A9E0F /* SyncJSONSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0160F021DDE3132004A9E0F /* SyncJSONSpec.swift */; };
 		D0160F071DDE6646004A9E0F /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0160F061DDE6646004A9E0F /* StringExtensions.swift */; };
 		D0160F091DDE683F004A9E0F /* InvalidJSONObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0160F081DDE683F004A9E0F /* InvalidJSONObject.swift */; };
+		D06F939F1DE34EC3006F6565 /* JSONTransformObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06F939E1DE34EC3006F6565 /* JSONTransformObject.swift */; };
 		D089BF741DDCD72200ADF618 /* JSONMapping.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D089BF6A1DDCD72200ADF618 /* JSONMapping.framework */; };
 		D089BF791DDCD72200ADF618 /* ToJSONSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D089BF781DDCD72200ADF618 /* ToJSONSpec.swift */; };
 		D089BF7B1DDCD72200ADF618 /* JSONMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = D089BF6D1DDCD72200ADF618 /* JSONMapping.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -64,6 +65,7 @@
 		D0160F021DDE3132004A9E0F /* SyncJSONSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncJSONSpec.swift; sourceTree = "<group>"; };
 		D0160F061DDE6646004A9E0F /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		D0160F081DDE683F004A9E0F /* InvalidJSONObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvalidJSONObject.swift; sourceTree = "<group>"; };
+		D06F939E1DE34EC3006F6565 /* JSONTransformObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTransformObject.swift; sourceTree = "<group>"; };
 		D089BF6A1DDCD72200ADF618 /* JSONMapping.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JSONMapping.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D089BF6D1DDCD72200ADF618 /* JSONMapping.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSONMapping.h; sourceTree = "<group>"; };
 		D089BF6E1DDCD72200ADF618 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				D0AF2ECC1DDCF1DF002436CC /* Object.swift */,
 				D0AF2ED01DDCFA8B002436CC /* User.swift */,
 				D0160F081DDE683F004A9E0F /* InvalidJSONObject.swift */,
+				D06F939E1DE34EC3006F6565 /* JSONTransformObject.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -315,6 +318,7 @@
 				D0AF2ECD1DDCF1DF002436CC /* Object.swift in Sources */,
 				D0AF2EC61DDCEB9C002436CC /* AttributeDescriptionSpec.swift in Sources */,
 				D0160F091DDE683F004A9E0F /* InvalidJSONObject.swift in Sources */,
+				D06F939F1DE34EC3006F6565 /* JSONTransformObject.swift in Sources */,
 				D0AF2ED11DDCFA8B002436CC /* User.swift in Sources */,
 				D089BF791DDCD72200ADF618 /* ToJSONSpec.swift in Sources */,
 				D0AF2EC41DDCEA9C002436CC /* DataModel.xcdatamodeld in Sources */,

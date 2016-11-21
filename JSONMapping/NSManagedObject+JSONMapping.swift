@@ -2,14 +2,6 @@ import CoreData
 import RemoteMapping
 
 
-/// Adds the keys and values from `rhs` to `lhs`
-func += <KeyType, ValueType> (lhs: inout Dictionary<KeyType, ValueType>, rhs: Dictionary<KeyType, ValueType>) {
-    for (key, value) in rhs {
-        lhs.updateValue(value, forKey: key)
-    }
-}
-
-
 extension JSONRepresentable where Self: NSManagedObject, Self: JSONValidator {
     /// Serializes a `NSManagedObject` to a JSONObject, using the remote properties.
     ///
@@ -69,42 +61,34 @@ extension JSONRepresentable where Self: NSManagedObject, Self: JSONValidator {
     }
 }
 
-extension NSManagedObject: JSONRepresentable, JSONValidator {
+extension NSManagedObject: JSONRepresentable, JSONValidator, JSONParser {
     open func isValid(json: JSONObject) -> Bool {
         return true
+    }
+    
+    open func parseJSON(json: JSONObject, localKey: String, remoteKey: String) -> Any? {
+        return json[remoteKey]
     }
 }
 
 private extension NSManagedObject {
     /// Syncs the scalar values in the JSON to `self`
     func sync(scalarValuesWithJSON json: JSONObject, dateFormatter: JSONDateFormatter? = nil) {
-        for (key, value) in json {
-            if let attributeDescription = attributeDescription(forRemoteKey: key) {
-                setValue(
-                    attributeDescription.value(usingRemoteValue: value, dateFormatter: dateFormatter),
-                    forKey: attributeDescription.name
-                )
+        entity.remoteAttributes
+            .forEach { attribute in
+                if let jsonValue = parseJSON(json: json, localKey: attribute.name, remoteKey: attribute.remotePropertyName) {
+                    setValue(
+                        attribute.value(usingRemoteValue: jsonValue, dateFormatter: dateFormatter),
+                        forKey: attribute.name
+                    )
+                }
             }
-        }
     }
     
     func sync(relationshipsWithJSON json: JSONObject, dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil) {
         entity.remoteRelationships
             .forEach { relationship in
-                let remotePropertyName = relationship.remotePropertyName
-                var jsonValue = json[remotePropertyName]
-                
-                /// TODO: Check if the class conforms to some `transform{remotePropertyName}JSON(json :JSONObject)`
-                ///       selector. If so, set `jsonValue` to the transformed value.
-                let selectorName = "transform" + remotePropertyName.capitalizingFirstLetter() + "JSON:"
-                let transformJSONSelector = Selector((selectorName))
-                if responds(to: transformJSONSelector) {
-                    let returnValue = perform(transformJSONSelector, with: jsonValue)
-                    if let transformedJSON = returnValue?.takeUnretainedValue() as? JSONObject {
-                        jsonValue = transformedJSON
-                    }
-                }
-                
+                let jsonValue = parseJSON(json: json, localKey: relationship.name, remoteKey: relationship.remotePropertyName)
                 if relationship.isToMany {
                     if let json = jsonValue as? [JSONObject] {
                         sync(toManyRelationship: relationship, withJSON: json, dateFormatter: dateFormatter, parent: parent)
