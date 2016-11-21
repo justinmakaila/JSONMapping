@@ -30,7 +30,7 @@ public protocol JSONValidator {
 }
 
 public protocol JSONParser {
-    func parseJSON(json: JSONObject, localKey: String, remoteKey: String) -> Any?
+    func parseJSON(json: JSONObject, propertyDescription: NSPropertyDescription) -> Any?
 }
 
 public protocol JSONRepresentable {

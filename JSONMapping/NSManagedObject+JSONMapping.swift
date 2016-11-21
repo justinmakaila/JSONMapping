@@ -66,8 +66,8 @@ extension NSManagedObject: JSONRepresentable, JSONValidator, JSONParser {
         return true
     }
     
-    open func parseJSON(json: JSONObject, localKey: String, remoteKey: String) -> Any? {
-        return json[remoteKey]
+    open func parseJSON(json: JSONObject, propertyDescription: NSPropertyDescription) -> Any? {
+        return json[propertyDescription.remotePropertyName]
     }
 }
 
@@ -76,7 +76,7 @@ private extension NSManagedObject {
     func sync(scalarValuesWithJSON json: JSONObject, dateFormatter: JSONDateFormatter? = nil) {
         entity.remoteAttributes
             .forEach { attribute in
-                if let jsonValue = parseJSON(json: json, localKey: attribute.name, remoteKey: attribute.remotePropertyName) {
+                if let jsonValue = parseJSON(json: json, propertyDescription: attribute) {
                     setValue(
                         attribute.value(usingRemoteValue: jsonValue, dateFormatter: dateFormatter),
                         forKey: attribute.name
@@ -88,7 +88,7 @@ private extension NSManagedObject {
     func sync(relationshipsWithJSON json: JSONObject, dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil) {
         entity.remoteRelationships
             .forEach { relationship in
-                let jsonValue = parseJSON(json: json, localKey: relationship.name, remoteKey: relationship.remotePropertyName)
+                let jsonValue = parseJSON(json: json, propertyDescription: relationship)
                 if relationship.isToMany {
                     if let json = jsonValue as? [JSONObject] {
                         sync(toManyRelationship: relationship, withJSON: json, dateFormatter: dateFormatter, parent: parent)

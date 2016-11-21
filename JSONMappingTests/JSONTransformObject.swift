@@ -5,7 +5,9 @@ class JSONTransformObject: NSManagedObject {
     @NSManaged
     var customString: String?
     
-    override func parseJSON(json: JSONObject, localKey: String, remoteKey: String) -> Any? {
+    override func parseJSON(json: JSONObject, propertyDescription: NSPropertyDescription) -> Any? {
+        let localKey = propertyDescription.name
+        
         if localKey == "customString" {
             if let strings = json["strings"] as? JSONObject {
                 if let value = strings["custom"] as? String {
@@ -14,6 +16,6 @@ class JSONTransformObject: NSManagedObject {
             }
         }
         
-        return super.parseJSON(json: json, localKey: localKey, remoteKey: remoteKey)
+        return super.parseJSON(json: json, propertyDescription: propertyDescription)
     }
 }
