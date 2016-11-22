@@ -21,6 +21,7 @@
         <attribute name="transformable" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
     <entity name="UpdatableObject" representedClassName=".UpdatableObject" syncable="YES">
+        <attribute name="state" attributeType="String" syncable="YES"/>
         <attribute name="synchronizedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="updatedAt" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
     </entity>
@@ -44,6 +45,6 @@
         <element name="JSONTransformObject" positionX="-45" positionY="90" width="128" height="60"/>
         <element name="Object" positionX="-63" positionY="-18" width="128" height="210"/>
         <element name="User" positionX="-45" positionY="90" width="128" height="120"/>
-        <element name="UpdatableObject" positionX="-45" positionY="90" width="128" height="75"/>
+        <element name="UpdatableObject" positionX="-45" positionY="90" width="128" height="90"/>
     </elements>
 </model>

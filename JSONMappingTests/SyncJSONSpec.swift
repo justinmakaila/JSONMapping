@@ -22,6 +22,7 @@ class SyncJSONSpec: QuickSpec {
     override func spec() {
         var dataStack: CoreDataStack!
         var managedObjectContext: NSManagedObjectContext!
+        let dateFormatter = ISO8601DateFormatter()
         
         beforeSuite {
             let bundle = Bundle.init(for: Object.self)
@@ -31,7 +32,6 @@ class SyncJSONSpec: QuickSpec {
         
         describe("NSManagedObjectContext") {
             let birthdate = Date()
-            let dateFormatter = ISO8601DateFormatter()
             let jsonCollection: [JSONObject] = [
                 [
                     "name": "Justin",
@@ -50,7 +50,12 @@ class SyncJSONSpec: QuickSpec {
             }
             
             it ("can sync an entire JSON collection") {
-                let changes = managedObjectContext.update(entityNamed: "User", withJSON: jsonCollection)
+                let changes = managedObjectContext.update(
+                    entityNamed: "User",
+                    withJSON: jsonCollection,
+                    dateFormatter: dateFormatter
+                )
+                
                 expect(changes.count).to(equal(2))
             }
             
@@ -69,13 +74,21 @@ class SyncJSONSpec: QuickSpec {
                 ]
                 
                 it ("will not insert duplicates") {
-                    let changes = managedObjectContext.update(entityNamed: "User", withJSON: duplicateJSONCollection)
+                    let changes = managedObjectContext.update(
+                        entityNamed: "User",
+                        withJSON: duplicateJSONCollection,
+                        dateFormatter: dateFormatter
+                    )
                     
                     expect(changes.count).to(equal(1))
                 }
                 
                 it("will overwrite changes in previous versions with duplicates") {
-                    let changes = managedObjectContext.update(entityNamed: "User", withJSON: duplicateJSONCollection)
+                    let changes = managedObjectContext.update(
+                        entityNamed: "User",
+                        withJSON: duplicateJSONCollection,
+                        dateFormatter: dateFormatter
+                    )
                     
                     let newUser = changes.first as? User
                     
@@ -87,7 +100,6 @@ class SyncJSONSpec: QuickSpec {
         
         describe("NSManagedObject sync with JSON") {
             var user: User!
-            let dateFormatter = ISO8601DateFormatter()
             let userBirthdate = Date()
             
             beforeEach {
@@ -113,11 +125,10 @@ class SyncJSONSpec: QuickSpec {
                     "birthdate": birthdateString
                 ]
                 
-                _ = user.sync(withJSON: json, dateFormatter: customDateFormatter)
+                user.sync(withJSON: json, dateFormatter: customDateFormatter)
                 
                 expect(user.name).to(equal("Michael"))
                 expect(user.gender).to(equal(Gender.male))
-                
                 expect(user.birthdate).toNot(beNil())
     //                expect(user.birthdate).to(equal(date))
             }
@@ -125,7 +136,7 @@ class SyncJSONSpec: QuickSpec {
             it ("does not sync values that do not match the type") {
                 expect(objectIsValid(object: user)).to(beTrue())
                 
-                _ = user.sync(withJSON: [
+                user.sync(withJSON: [
                     "name": 12345,
                     "gender": [],
                     "birthdate": [:]
@@ -160,7 +171,7 @@ class SyncJSONSpec: QuickSpec {
                     ]
                 ]
                 
-                _ = user.sync(withJSON: json, dateFormatter: dateFormatter)
+                user.sync(withJSON: json, dateFormatter: dateFormatter)
                 
                 expect(user.significantOther).toNot(beNil())
                 expect(user.significantOther?.significantOther).to(equal(user))
@@ -190,7 +201,7 @@ class SyncJSONSpec: QuickSpec {
                         "significantOther": NSNull()
                     ]
                     
-                    _ = finn.sync(withJSON: breakupJSON)
+                    finn.sync(withJSON: breakupJSON)
                     
                     expect(finn.significantOther).to(beNil())
                     expect(objectIsValid(object: finn)).to(beTrue())
@@ -209,7 +220,7 @@ class SyncJSONSpec: QuickSpec {
                         "friends": NSNull()
                     ]
                     
-                    _ = finn.sync(withJSON: invalidJSON, dateFormatter: dateFormatter)
+                    finn.sync(withJSON: invalidJSON, dateFormatter: dateFormatter)
                     
                     expect(objectIsValid(object: finn)).to(beTrue())
                 }
@@ -219,7 +230,7 @@ class SyncJSONSpec: QuickSpec {
                 let birthdate = Date()
                 
                 let finn = User(context: managedObjectContext)
-                _ = finn.sync(withJSON: [
+                finn.sync(withJSON: [
                     "name": "Finn",
                     "gender": "male",
                     "birthdate": dateFormatter.string(from: birthdate)
@@ -233,7 +244,7 @@ class SyncJSONSpec: QuickSpec {
                     "birthdate": dateFormatter.string(from: birthdate)
                 ]
                 let luci = User(context: managedObjectContext)
-                _ = luci.sync(withJSON: luciJSON)
+                luci.sync(withJSON: luciJSON)
                 
                 luci.significantOther = finn
                 
@@ -242,7 +253,7 @@ class SyncJSONSpec: QuickSpec {
                 expect(luci.significantOther).to(equal(finn))
                 
                 /// Attempt to add the JSON version of Luci to the user
-                _ = user.sync(
+                user.sync(
                     withJSON: [
                         "friends": [
                             luci.toJSON(dateFormatter: dateFormatter)
@@ -256,20 +267,35 @@ class SyncJSONSpec: QuickSpec {
             }
             
             describe("subclasses") {
-                it("can reject JSON merges") {
+                it ("can hook into when sync starts") {
+                    let updatableObject = UpdatableObject(context: managedObjectContext)
+                }
+                
+                it ("can hook into when sync finishes") {
+                    let updatableObject = UpdatableObject(context: managedObjectContext)
+                    expect(updatableObject.synchronizedAt).to(beNil())
+                    
+                    updatableObject.sync(withJSON: [
+                        "state": "completed"
+                    ])
+                    
+                    expect(updatableObject.synchronizedAt).toNot(beNil())
+                }
+                
+                it ("can reject JSON merges") {
                     let object = InvalidJSONObject(context: managedObjectContext)
                     
-                    _ = object.sync(withJSON: [
+                    object.sync(withJSON: [
                         "string": "this is a test string"
                     ])
                     
                     expect(object.string).to(beNil())
                 }
                 
-                it("can be forced to accept JSON merges") {
+                it ("can be forced to accept JSON merges") {
                     let object = InvalidJSONObject(context: managedObjectContext)
                     
-                    _ = object.sync(
+                    object.sync(
                         withJSON: [
                             "string": "this is a test string"
                         ],
@@ -288,7 +314,7 @@ class SyncJSONSpec: QuickSpec {
                     ]
                     
                     let object = JSONTransformObject(context: managedObjectContext)
-                    _ = object.sync(withJSON: json)
+                    object.sync(withJSON: json)
                     
                     expect(object.customString).toNot(beNil())
                     expect(object.customString).to(equal("custom string"))
@@ -303,7 +329,7 @@ class SyncJSONSpec: QuickSpec {
                     ]
                     
                     let object = CustomMappingObject(context: managedObjectContext)
-                    _ = object.sync(withJSON: json)
+                    object.sync(withJSON: json)
                     
                     expect(object.customString).toNot(beNil())
                     expect(object.customString).to(equal("custom string customized further"))
