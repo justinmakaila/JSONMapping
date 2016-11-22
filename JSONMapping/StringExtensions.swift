@@ -7,8 +7,4 @@ internal extension String {
         
         return firstLetter + remainder
     }
-    
-    mutating func capitalizeFirstLetter() {
-        self = self.capitalizingFirstLetter()
-    }
 }

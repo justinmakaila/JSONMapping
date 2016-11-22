@@ -51,7 +51,13 @@ extension NSManagedObjectContext {
             return []
         }
         
-        return update(entity: entityDescription, withJSON: json, dateFormatter: dateFormatter, parent: parent, predicate: predicate)
+        return update(
+            entity: entityDescription,
+            withJSON: json,
+            dateFormatter: dateFormatter,
+            parent: parent,
+            predicate: predicate
+        )
     }
     
     public func update(entity: NSEntityDescription, withJSON json: [JSONObject], dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil, predicate: NSPredicate? = nil) -> [NSManagedObject] {

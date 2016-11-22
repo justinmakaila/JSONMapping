@@ -2,7 +2,37 @@ import CoreData
 import RemoteMapping
 
 
-extension JSONRepresentable where Self: NSManagedObject, Self: JSONValidator {
+extension NSManagedObject: JSONRepresentable, JSONValidator, JSONParser {
+    open func isValid(json: JSONObject) -> Bool {
+        return true
+    }
+    
+    open func parseJSON(json: JSONObject, propertyDescription: NSPropertyDescription) -> Any? {
+        return json[propertyDescription.remotePropertyName]
+    }
+    
+    /// Syncs `self` with `json` if the JSONObject is valid or
+    /// if the `force` flag is set.
+    ///
+    /// - Parameters:
+    ///     - json: The `JSONObject` to sync with.
+    ///     - dateFormatter: A `JSONDateFormatter` to be used for serialzing Dates from JSON. If none is provided,
+    ///                      no dates will be processed from the JSON.
+    ///     - parent: The parent of the object. Used for inverse relationships.
+    ///     - force: Force merge of `json`
+    open func sync(withJSON json: JSONObject, dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil, force: Bool = false) {
+        let isValid = self.isValid(json: json) || force
+        if isValid {
+            willSyncWithJSON(json: json)
+            sync(scalarValuesWithJSON: json, dateFormatter: dateFormatter)
+            sync(relationshipsWithJSON: json, dateFormatter: dateFormatter, parent: parent)
+            didSyncWithJSON(success: true)
+            return
+        }
+        
+        didSyncWithJSON(success: false)
+    }
+    
     /// Serializes a `NSManagedObject` to a JSONObject, using the remote properties.
     ///
     /// - Parameters:
@@ -45,30 +75,11 @@ extension JSONRepresentable where Self: NSManagedObject, Self: JSONValidator {
         )
     }
     
-    /// Syncs `self` with `json`.
-    ///
-    /// - Parameters:
-    ///     - json: The JSON to sync with.
-    ///     - dateFormatter: A `JSONDateFormatter` to be used for serialzing Dates from JSON. If none is provided,
-    ///                      no dates will be processed from the JSON.
-    ///     - parent: The parent of the object.
-    ///     - force: Flag to force merge the JSON
-    public func sync(withJSON json: JSONObject, dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil, force: Bool = false) {
-        if isValid(json: json) || force {
-            sync(scalarValuesWithJSON: json, dateFormatter: dateFormatter)
-            sync(relationshipsWithJSON: json, dateFormatter: dateFormatter, parent: parent)
-        }
-    }
-}
-
-extension NSManagedObject: JSONRepresentable, JSONValidator, JSONParser {
-    open func isValid(json: JSONObject) -> Bool {
-        return true
-    }
+    /// Hook for when syncing with JSON will start
+    open func willSyncWithJSON(json: JSONObject) { }
     
-    open func parseJSON(json: JSONObject, propertyDescription: NSPropertyDescription) -> Any? {
-        return json[propertyDescription.remotePropertyName]
-    }
+    /// Hook for when finished syncing with JSON
+    open func didSyncWithJSON(success: Bool) { }
 }
 
 private extension NSManagedObject {
@@ -77,7 +88,7 @@ private extension NSManagedObject {
         entity.remoteAttributes
             .forEach { attribute in
                 if let jsonValue = parseJSON(json: json, propertyDescription: attribute) {
-                    let attributeValue = attribute.value(usingRemoteValue: jsonValue, dateFormatter: dateFormatter)
+                    let attributeValue = attribute.value(fromJSONValue: jsonValue, dateFormatter: dateFormatter)
                     if let attributeValue = attributeValue {
                         setValue(attributeValue, forKey: attribute.name)
                     } else if attribute.isOptional {
@@ -142,11 +153,11 @@ private extension NSManagedObject {
             guard let object = value(forKey: relationship.name) as? NSManagedObject
             else {
                 let object = NSEntityDescription.insertNewObject(forEntityName: destinationEntityName, into: managedObjectContext)
-                object.sync(withJSON: json, dateFormatter: dateFormatter)
+                _ = object.sync(withJSON: json, dateFormatter: dateFormatter)
                 return setValue(object, forKey: relationship.name)
             }
             
-            object.sync(withJSON: json, dateFormatter: dateFormatter)
+            _ = object.sync(withJSON: json, dateFormatter: dateFormatter)
         }
     }
     
@@ -198,8 +209,6 @@ private extension NSManagedObject {
     }
 }
 
-
-/// Helpers
 private extension NSManagedObject {
     /// Returns a JSON object.
     ///

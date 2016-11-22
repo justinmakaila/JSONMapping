@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D00040DB1DE40770005FAFD8 /* UpdatableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00040DA1DE40770005FAFD8 /* UpdatableObject.swift */; };
 		D0160F031DDE3132004A9E0F /* SyncJSONSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0160F021DDE3132004A9E0F /* SyncJSONSpec.swift */; };
 		D0160F071DDE6646004A9E0F /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0160F061DDE6646004A9E0F /* StringExtensions.swift */; };
 		D0160F091DDE683F004A9E0F /* InvalidJSONObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0160F081DDE683F004A9E0F /* InvalidJSONObject.swift */; };
@@ -63,6 +64,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D00040DA1DE40770005FAFD8 /* UpdatableObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatableObject.swift; sourceTree = "<group>"; };
 		D0160F021DDE3132004A9E0F /* SyncJSONSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncJSONSpec.swift; sourceTree = "<group>"; };
 		D0160F061DDE6646004A9E0F /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		D0160F081DDE683F004A9E0F /* InvalidJSONObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvalidJSONObject.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 				D0160F081DDE683F004A9E0F /* InvalidJSONObject.swift */,
 				D06F939E1DE34EC3006F6565 /* JSONTransformObject.swift */,
 				D06F93A01DE36EA3006F6565 /* CustomMappingObject.swift */,
+				D00040DA1DE40770005FAFD8 /* UpdatableObject.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 				D0AF2ECD1DDCF1DF002436CC /* Object.swift in Sources */,
 				D0AF2EC61DDCEB9C002436CC /* AttributeDescriptionSpec.swift in Sources */,
 				D0160F091DDE683F004A9E0F /* InvalidJSONObject.swift in Sources */,
+				D00040DB1DE40770005FAFD8 /* UpdatableObject.swift in Sources */,
 				D06F939F1DE34EC3006F6565 /* JSONTransformObject.swift in Sources */,
 				D06F93A11DE36EA3006F6565 /* CustomMappingObject.swift in Sources */,
 				D0AF2ED11DDCFA8B002436CC /* User.swift in Sources */,

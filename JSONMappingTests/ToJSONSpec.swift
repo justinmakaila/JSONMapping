@@ -129,7 +129,9 @@ class ToJSONSpec: QuickSpec {
                     expect(userJSON["significantOther"]).toNot(beNil())
                     expect(userJSON["significantOther"] as? String).to(equal("Paige"))
                     
-                    expect((userJSON["friends"] as? [Any])?.count).to(equal(user.friends.count))
+                    expect((userJSON["friends"] as? [String])).toNot(beEmpty())
+                    expect((userJSON["friends"] as? [String])).to(contain("Finn"))
+                    expect((userJSON["friends"] as? [String])?.count).to(equal(user.friends.count))
                 }
                 
                 it ("will not embed parent relationships in children") {

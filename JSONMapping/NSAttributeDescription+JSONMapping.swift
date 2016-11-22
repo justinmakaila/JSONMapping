@@ -45,22 +45,22 @@ extension NSAttributeDescription {
     ///    - dateFormatter: The date formatter to use to transform `Date` values.
     ///
     ///  - Returns: The transformed value of `remoteValue` as specified by self or nil.
-    public func value(usingRemoteValue remoteValue: Any, dateFormatter: JSONDateFormatter? = nil) -> Any? {
+    public func value(fromJSONValue value: Any, dateFormatter: JSONDateFormatter? = nil) -> Any? {
         /// If `remoteValue` is already the type specified by `valueClassName`, return it.
         if let valueClassName = attributeValueClassName,
             let valueClass: AnyClass = NSClassFromString(valueClassName),
-            (remoteValue as AnyObject).isKind(of: valueClass) {
+            (value as AnyObject).isKind(of: valueClass) {
             /// Booleans are stored as NSNumber. Therefore, NSNumber instances will not be transformed
             if !attributeType.isBoolean {
-                return remoteValue
+                return value
             }
         }
         
         if attributeType.isData {
-            return NSKeyedArchiver.archivedData(withRootObject: remoteValue)
+            return NSKeyedArchiver.archivedData(withRootObject: value)
         }
         
-        if let remoteValue = remoteValue as? String {
+        if let remoteValue = value as? String {
             if attributeType.isNumber {
                 return NumberFormatter().number(from: remoteValue)
             } else if attributeType.isDate {
@@ -70,7 +70,7 @@ extension NSAttributeDescription {
             }
         }
         
-        if let remoteValue = remoteValue as? NSNumber {
+        if let remoteValue = value as? NSNumber {
             if attributeType.isString {
                 return "\(remoteValue)"
             } else if attributeType.isDecimalNumber {
