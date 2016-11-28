@@ -120,18 +120,6 @@ private extension NSManagedObject {
                         }
                     }
                 }
-                
-                
-                let jsonValue = parseJSON(json: json, propertyDescription: relationship)
-                if relationship.isToMany {
-                    if let json = jsonValue as? [JSONObject] {
-                        sync(toManyRelationship: relationship, withJSON: json, dateFormatter: dateFormatter, parent: parent)
-                    }
-                } else {
-                    if let json = jsonValue as? JSONObject {
-                        sync(toOneRelationship: relationship, withJSON: json, dateFormatter: dateFormatter)
-                    }
-                }
             }
     }
     

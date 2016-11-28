@@ -20,6 +20,13 @@
         <attribute name="string" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="transformable" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
+    <entity name="Pet" representedClassName=".Pet" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="owners" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="pet" inverseEntity="User" syncable="YES"/>
+        <userInfo>
+            <entry key="localPrimaryKey" value="name"/>
+        </userInfo>
+    </entity>
     <entity name="UpdatableObject" representedClassName=".UpdatableObject" syncable="YES">
         <attribute name="state" attributeType="String" syncable="YES"/>
         <attribute name="synchronizedAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -34,6 +41,7 @@
         </attribute>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <relationship name="friends" toMany="YES" deletionRule="Nullify" destinationEntity="User" syncable="YES"/>
+        <relationship name="pet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pet" inverseName="owners" inverseEntity="Pet" syncable="YES"/>
         <relationship name="significantOther" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="significantOther" inverseEntity="User" syncable="YES"/>
         <userInfo>
             <entry key="localPrimaryKey" value="name"/>
@@ -44,7 +52,8 @@
         <element name="InvalidJSONObject" positionX="-45" positionY="90" width="128" height="60"/>
         <element name="JSONTransformObject" positionX="-45" positionY="90" width="128" height="60"/>
         <element name="Object" positionX="-63" positionY="-18" width="128" height="210"/>
-        <element name="User" positionX="-45" positionY="90" width="128" height="120"/>
         <element name="UpdatableObject" positionX="-45" positionY="90" width="128" height="90"/>
+        <element name="User" positionX="-45" positionY="90" width="128" height="135"/>
+        <element name="Pet" positionX="-45" positionY="90" width="128" height="75"/>
     </elements>
 </model>

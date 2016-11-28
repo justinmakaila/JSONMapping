@@ -60,40 +60,59 @@ class SyncJSONSpec: QuickSpec {
             }
             
             describe("inserting duplicates") {
+                let birthdate = dateFormatter.string(from: Date())
+                let updatedBirthdate = dateFormatter.string(from: Date(timeIntervalSinceNow: 500))
                 let duplicateJSONCollection: [JSONObject] = [
                     [
                         "name": "Justin",
                         "gender": "male",
-                        "birthdate": dateFormatter.string(from: birthdate)
+                        "birthdate": birthdate,
+                        "friends": [
+                            [
+                                "name": "Finn",
+                                "gender": "male",
+                                "birthdate":birthdate
+                            ]
+                        ],
+                        "pet": [
+                            "name": "Slayer"
+                        ]
                     ],
                     [
-                        "name": "Justin",
+                        "name": "Paige",
                         "gender": "female",
-                        "birthdate": dateFormatter.string(from: birthdate)
+                        "birthdate": birthdate,
+                        "friends": [
+                            [
+                                "name": "Finn",
+                                "gender": "male",
+                                "birthdate": updatedBirthdate
+                            ]
+                        ],
+                        "pet": [
+                            "name": "Slayer"
+                        ]
                     ],
                 ]
                 
                 it ("will not insert duplicates") {
-                    let changes = managedObjectContext.update(
-                        entityNamed: "User",
-                        withJSON: duplicateJSONCollection,
-                        dateFormatter: dateFormatter
-                    )
+                    for _ in 0..<5 {
+                        let _ = managedObjectContext.update(
+                            entityNamed: "User",
+                            withJSON: duplicateJSONCollection,
+                            dateFormatter: dateFormatter
+                        )
+                    }
                     
-                    expect(changes.count).to(equal(1))
-                }
-                
-                it("will overwrite changes in previous versions with duplicates") {
-                    let changes = managedObjectContext.update(
-                        entityNamed: "User",
-                        withJSON: duplicateJSONCollection,
-                        dateFormatter: dateFormatter
-                    )
+                    let userCountRequest = NSFetchRequest<NSManagedObject>(entityName: "User")
+                    let userCount = try! managedObjectContext.count(for: userCountRequest)
                     
-                    let newUser = changes.first as? User
+                    expect(userCount).to(equal(3))
                     
-                    expect(newUser).toNot(beNil())
-                    expect(newUser?.gender.rawValue).to(equal(Gender.female.rawValue))
+                    let petCountRequest = NSFetchRequest<NSManagedObject>(entityName: "Pet")
+                    let petCount = try! managedObjectContext.count(for: petCountRequest)
+                    
+                    expect(petCount).to(equal(1))
                 }
             }
         }
@@ -119,13 +138,14 @@ class SyncJSONSpec: QuickSpec {
                 customDateFormatter.dateFormat = "YYYY-MM-DD'T'HH:mm:ss.SSSZ"
                 let birthdateString = customDateFormatter.string(from: date)
                 
-                let json: JSONObject = [
-                    "name": "Michael",
-                    "gender": "male",
-                    "birthdate": birthdateString
-                ]
-                
-                user.sync(withJSON: json, dateFormatter: customDateFormatter)
+                user.sync(
+                    withJSON: [
+                        "name": "Michael",
+                        "gender": "male",
+                        "birthdate": birthdateString
+                    ],
+                    dateFormatter: customDateFormatter
+                )
                 
                 expect(user.name).to(equal("Michael"))
                 expect(user.gender).to(equal(Gender.male))
@@ -230,21 +250,26 @@ class SyncJSONSpec: QuickSpec {
                 let birthdate = Date()
                 
                 let finn = User(context: managedObjectContext)
-                finn.sync(withJSON: [
-                    "name": "Finn",
-                    "gender": "male",
-                    "birthdate": dateFormatter.string(from: birthdate)
-                ])
+                finn.sync(
+                    withJSON: [
+                        "name": "Finn",
+                        "gender": "male",
+                        "birthdate": dateFormatter.string(from: birthdate)
+                    ],
+                    dateFormatter: dateFormatter
+                )
                 
                 expect(finn.primaryKey as? String).to(equal("Finn"))
                 
-                let luciJSON: JSONObject = [
-                    "name": "Luci",
-                    "gender": "female",
-                    "birthdate": dateFormatter.string(from: birthdate)
-                ]
                 let luci = User(context: managedObjectContext)
-                luci.sync(withJSON: luciJSON)
+                luci.sync(
+                    withJSON: [
+                        "name": "Luci",
+                        "gender": "female",
+                        "birthdate": dateFormatter.string(from: birthdate)
+                    ],
+                    dateFormatter: dateFormatter
+                )
                 
                 luci.significantOther = finn
                 

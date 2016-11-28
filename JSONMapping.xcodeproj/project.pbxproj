@@ -35,6 +35,7 @@
 		D0AF2ED11DDCFA8B002436CC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AF2ED01DDCFA8B002436CC /* User.swift */; };
 		D0D586C51DE2328100D72F96 /* NSEntityDescription+JSONMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D586C41DE2328100D72F96 /* NSEntityDescription+JSONMapping.swift */; };
 		D0D586C71DE249AD00D72F96 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D586C61DE249AD00D72F96 /* JSON.swift */; };
+		D0ECB5231DEBD982005E946C /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0ECB5221DEBD982005E946C /* Pet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 		D0AF2ED01DDCFA8B002436CC /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D0D586C41DE2328100D72F96 /* NSEntityDescription+JSONMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSEntityDescription+JSONMapping.swift"; sourceTree = "<group>"; };
 		D0D586C61DE249AD00D72F96 /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
+		D0ECB5221DEBD982005E946C /* Pet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +191,7 @@
 				D06F939E1DE34EC3006F6565 /* JSONTransformObject.swift */,
 				D06F93A01DE36EA3006F6565 /* CustomMappingObject.swift */,
 				D00040DA1DE40770005FAFD8 /* UpdatableObject.swift */,
+				D0ECB5221DEBD982005E946C /* Pet.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -330,6 +333,7 @@
 				D0AF2ED11DDCFA8B002436CC /* User.swift in Sources */,
 				D089BF791DDCD72200ADF618 /* ToJSONSpec.swift in Sources */,
 				D0AF2EC41DDCEA9C002436CC /* DataModel.xcdatamodeld in Sources */,
+				D0ECB5231DEBD982005E946C /* Pet.swift in Sources */,
 				D0160F031DDE3132004A9E0F /* SyncJSONSpec.swift in Sources */,
 				D0AF2ECB1DDCEDB0002436CC /* AttributeTypeSpec.swift in Sources */,
 			);

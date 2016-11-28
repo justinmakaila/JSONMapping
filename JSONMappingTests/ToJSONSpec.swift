@@ -33,7 +33,7 @@ class ToJSONSpec: QuickSpec {
             it ("can include nil values") {
                 let userJSON = user.toJSON(dateFormatter: dateFormatter)
                 
-                expect(userJSON.count).to(equal(5))
+                expect(userJSON.count).to(equal(6))
                 expect(userJSON["name"] as? String).to(equal(user.name))
                 expect(userJSON["birthdate"] as? String).to(equal(dateFormatter.string(from: userBirthdate)))
                 expect(userJSON["gender"] as? String).to(equal(Gender.male.rawValue))

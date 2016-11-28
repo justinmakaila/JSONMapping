@@ -29,4 +29,7 @@ class User: NSManagedObject {
     
     @NSManaged
     var friends: Set<User>
+    
+    @NSManaged
+    var pet: Pet?
 }

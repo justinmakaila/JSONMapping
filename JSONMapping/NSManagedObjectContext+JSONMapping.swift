@@ -28,7 +28,7 @@ extension NSManagedObjectContext {
         guard let entityName = entity.name else { fatalError() }
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
-        fetchRequest.predicate = NSPredicate(format: "%@ == %@", entity.localPrimaryKeyName, primaryKey)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", entity.localPrimaryKeyName, primaryKey)
         fetchRequest.fetchLimit = 1
         
         var result: NSManagedObject? = nil
