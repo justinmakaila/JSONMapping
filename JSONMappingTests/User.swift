@@ -1,4 +1,5 @@
 import CoreData
+import JSONMapping
 
 enum Gender: String {
     case male = "male"
@@ -28,8 +29,28 @@ class User: NSManagedObject {
     var significantOther: User?
     
     @NSManaged
+    var crush: User?
+    
+    @NSManaged
     var friends: Set<User>
     
     @NSManaged
     var pet: Pet?
+    
+    @NSManaged
+    private var metadataValue: Data?
+    var metadata: JSONObject {
+        get {
+            guard let metadataValue = metadataValue,
+                let metadata = NSKeyedUnarchiver.unarchiveObject(with: metadataValue) as? JSONObject
+            else {
+                return [:]
+            }
+            
+            return metadata
+        }
+        set {
+            metadataValue = newValue.isEmpty ? nil : NSKeyedArchiver.archivedData(withRootObject: newValue)
+        }
+    }
 }

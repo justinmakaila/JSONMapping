@@ -210,7 +210,7 @@ private extension NSManagedObject {
         var jsonObject = JSONObject()
         
         properties
-            .filter { !excludeKeys.contains($0.name) }
+            .filter { !excludeKeys.contains($0.remotePropertyName) }
             .forEach { propertyDescription in
                 let remoteRelationshipName = propertyDescription.remotePropertyName
                 
@@ -221,7 +221,7 @@ private extension NSManagedObject {
                         includeNilValues: includeNilValues
                     )
                 } else if let relationshipDescription = propertyDescription as? NSRelationshipDescription,
-                    (relationshipType != .none) {
+                    relationshipType != .none {
                     /// A valid relationship is one which does not go back up the relationship heirarchy...
                     /// TODO: This condition could be much clearer
                     let isValidRelationship = !(parent != nil
@@ -254,6 +254,8 @@ private extension NSManagedObject {
             )
         case .reference:
             return object.primaryKey ?? NSNull()
+        case let .custom(map):
+            return map(object)
         default:
             return NSNull()
         }

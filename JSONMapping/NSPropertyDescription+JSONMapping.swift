@@ -11,6 +11,6 @@ extension NSPropertyDescription {
             return nil
         }
         
-        return RelationshipType(rawValue: relationshipMappingValue)
+        return RelationshipType(string: relationshipMappingValue)
     }
 }

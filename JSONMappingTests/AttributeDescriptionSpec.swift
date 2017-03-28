@@ -92,10 +92,9 @@ class AttributeDescriptionSpec: QuickSpec {
         }
         
         it ("can transform a date string to a date") {
-            let ISOFormatString = "YYYY-MM-DD'T'hh:mm:ss.sss"
             let date = Date()
             let customDateFormatter = DateFormatter()
-            customDateFormatter.dateFormat = ISOFormatString
+            customDateFormatter.dateFormat = "YYYY-MM-DD'T'hh:mm:ss.sss"
             
             let birthdateString = customDateFormatter.string(from: date)
             

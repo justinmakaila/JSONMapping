@@ -25,16 +25,46 @@ public protocol JSONParser {
 
 
 /// Represents relationships for JSON serialization
-public enum RelationshipType: String {
+public enum RelationshipType: Equatable {
+    public static func == (lhs: RelationshipType, rhs: RelationshipType) -> Bool {
+        switch (lhs, rhs) {
+        case (.none, .none):
+            return true
+        case (.embedded, .embedded):
+            return true
+        case (.reference, .reference):
+            return true
+        default:
+            return false
+        }
+    }
+    
+    
     /// Don't include any relationship
-    case none = "none"
+    case none
     
     /// Include embedded objects
-    case embedded = "embedded"
+    case embedded
 
     /// Include refrences by primary key
-    case reference = "reference"
+    case reference
+    
+    case custom((NSManagedObject) -> Any)
+    
+    init?(string: String) {
+        switch string {
+        case "none":
+            self = .none
+        case "embedded":
+            self = .embedded
+        case "reference":
+            self = .reference
+        default:
+            return nil
+        }
+    }
 }
+
 
 
 public protocol JSONRepresentable {

@@ -1,6 +1,7 @@
 import Quick
 import Nimble
 import CoreDataStack
+import RemoteMapping
 
 @testable
 import JSONMapping
@@ -33,7 +34,7 @@ class ToJSONSpec: QuickSpec {
             it ("can include nil values") {
                 let userJSON = user.toJSON(dateFormatter: dateFormatter)
                 
-                expect(userJSON.count).to(equal(6))
+                expect(userJSON.count).to(equal(8))
                 expect(userJSON["name"] as? String).to(equal(user.name))
                 expect(userJSON["birthdate"] as? String).to(equal(dateFormatter.string(from: userBirthdate)))
                 expect(userJSON["gender"] as? String).to(equal(Gender.male.rawValue))
@@ -134,6 +135,21 @@ class ToJSONSpec: QuickSpec {
                     expect((userJSON["friends"] as? [String])?.count).to(equal(user.friends.count))
                 }
                 
+                it ("can embed relationships using a custom strategy") {
+                    let userJSON = user.toChangedJSON(dateFormatter: dateFormatter, relationshipType: .custom({ object in
+                        return RelationshipWrapper(primaryKey: object.primaryKey as! String)
+                    }))
+                    
+                    let significantOtherValue = RelationshipWrapper(primaryKey: "Paige")
+                    let friendValue = RelationshipWrapper(primaryKey: "Finn")
+                    
+                    expect(userJSON["significantOther"] as? RelationshipWrapper).to(equal(significantOtherValue))
+                    
+                    expect((userJSON["friends"] as? [RelationshipWrapper])).toNot(beEmpty())
+                    expect((userJSON["friends"] as? [RelationshipWrapper])).to(contain(friendValue))
+                    expect((userJSON["friends"] as? [RelationshipWrapper])?.count).to(equal(user.friends.count))
+                }
+                
                 it ("will not embed parent relationships in children") {
                     let userJSON = user.toJSON(dateFormatter: dateFormatter, relationshipType: .embedded)
                     
@@ -145,4 +161,13 @@ class ToJSONSpec: QuickSpec {
             }
         }
     }
+}
+
+
+struct RelationshipWrapper: Equatable {
+    public static func == (lhs: RelationshipWrapper, rhs: RelationshipWrapper) -> Bool {
+        return (lhs.primaryKey == rhs.primaryKey)
+    }
+    
+    let primaryKey: String
 }

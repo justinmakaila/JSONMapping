@@ -142,7 +142,16 @@ class SyncJSONSpec: QuickSpec {
                     withJSON: [
                         "name": "Michael",
                         "gender": "male",
-                        "birthdate": birthdateString
+                        "birthdate": birthdateString,
+                        "metadata": [
+                            "nickname": "Shredlord",
+                            "favoriteNumber": "666",
+                            "favoriteWords": [
+                                "yolo",
+                                "lol",
+                                "ok"
+                            ]
+                        ]
                     ],
                     dateFormatter: customDateFormatter
                 )
@@ -150,7 +159,10 @@ class SyncJSONSpec: QuickSpec {
                 expect(user.name).to(equal("Michael"))
                 expect(user.gender).to(equal(Gender.male))
                 expect(user.birthdate).toNot(beNil())
-    //                expect(user.birthdate).to(equal(date))
+                expect(user.metadata).toNot(beEmpty())
+                expect(user.metadata["nickname"] as? String).to(equal("Shredlord"))
+                expect(user.metadata["favoriteNumber"] as? String).to(equal("666"))
+                expect(user.metadata["favoriteWords"] as? [String]).to(contain(["yolo", "lol", "ok"]))
             }
             
             it ("does not sync values that do not match the type") {
@@ -165,39 +177,73 @@ class SyncJSONSpec: QuickSpec {
                 expect(objectIsValid(object: user)).to(beTrue())
             }
             
-            it ("can sync with JSON relationships") {
-                let birthdate = Date()
-                let json: JSONObject = [
-                    "name": "Justin",
-                    "gender": "male",
-                    "birthdate": dateFormatter.string(from: birthdate),
-                    "significantOther": [
-                        "name": "Paige",
-                        "gender": "female",
-                        "birthdate": dateFormatter.string(from: birthdate)
-                    ],
-                    "friends": [
-                        [
-                            "name": "Finn",
-                            "gender": "male",
+            describe ("syncing relationships") {
+                it ("can sync with JSON relationships") {
+                    let birthdate = Date()
+                    let json: JSONObject = [
+                        "name": "Justin",
+                        "gender": "male",
+                        "birthdate": dateFormatter.string(from: birthdate),
+                        "significantOther": [
+                            "name": "Paige",
+                            "gender": "female",
                             "birthdate": dateFormatter.string(from: birthdate)
                         ],
-                        [
-                            "name": "Luci",
-                            "gender": "female",
-                            "birthdate": dateFormatter.string(from: birthdate),
-                            "significantOther": "Finn"
+                        "friends": [
+                            [
+                                "name": "Finn",
+                                "gender": "male",
+                                "birthdate": dateFormatter.string(from: birthdate)
+                            ],
+                            [
+                                "name": "Luci",
+                                "gender": "female",
+                                "birthdate": dateFormatter.string(from: birthdate),
+                                "significantOther": "Finn"
+                            ]
                         ]
                     ]
-                ]
+                    
+                    user.sync(withJSON: json, dateFormatter: dateFormatter)
+                    
+                    expect(user.significantOther).toNot(beNil())
+                    expect(user.significantOther?.significantOther).to(equal(user))
+                    
+                    expect(user.friends).toNot(beNil())
+                    expect(user.friends.count).to(equal(2))
+                }
                 
-                user.sync(withJSON: json, dateFormatter: dateFormatter)
-                
-                expect(user.significantOther).toNot(beNil())
-                expect(user.significantOther?.significantOther).to(equal(user))
-                
-                expect(user.friends).toNot(beNil())
-                expect(user.friends.count).to(equal(2))
+                it ("can sync one-way to-one relationships") {
+                    let json: JSONObject = [
+                        "name": "Finn",
+                        "gender": "male",
+                        "birthdate": dateFormatter.string(from: userBirthdate),
+                        "crush": [
+                            "name": "Luci",
+                            "gender": "female",
+                            "birthdate": dateFormatter.string(from: userBirthdate)
+                        ]
+                    ]
+                    
+                    let finn = User(context: managedObjectContext)
+                    finn.sync(withJSON: json, dateFormatter: dateFormatter)
+                    
+                    expect(finn.crush).toNot(beNil())
+                    expect(finn.crush?.primaryKey as? String).to(equal("Luci"))
+                    
+                    var validationError: Error?
+                    do {
+                        try finn.validateForInsert()
+                        try finn.validateForUpdate()
+                        
+                        try finn.crush?.validateForInsert()
+                        try finn.crush?.validateForUpdate()
+                    } catch {
+                        validationError = error
+                    }
+                    
+                    expect(validationError).to(beNil())
+                }
             }
             
             describe("nil values") {
