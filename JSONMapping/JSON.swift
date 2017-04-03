@@ -72,5 +72,19 @@ public protocol JSONRepresentable {
     
     func toChangedJSON(dateFormatter: JSONDateFormatter, relationshipType: RelationshipType, parent: NSManagedObject?, excludeKeys: Set<String>, includeNilValues: Bool) -> JSONObject
     
-    func sync(withJSON json: JSONObject, dateFormatter: JSONDateFormatter?, parent: NSManagedObject?, force: Bool)
+    func merge(withJSON json: JSONObject, dateFormatter: JSONDateFormatter?, parent: NSManagedObject?, force: Bool)
+}
+
+
+public protocol JSONInitializable { }
+
+extension JSONInitializable where Self: NSManagedObject, Self: JSONRepresentable {
+    public init(entity entityDescription: NSEntityDescription, insertInto context: NSManagedObjectContext, json: JSONObject, dateFormatter: JSONDateFormatter? = nil) {
+        self.init(entity: entityDescription, insertInto: context)
+        
+        merge(
+            withJSON: json,
+            dateFormatter: dateFormatter
+        )
+    }
 }

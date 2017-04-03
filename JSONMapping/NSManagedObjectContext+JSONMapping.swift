@@ -40,7 +40,7 @@ extension NSManagedObjectContext {
         let object = result
             ?? NSEntityDescription.insertNewObject(forEntityName: entityName, into: self)
         
-        object.sync(withJSON: json, dateFormatter: dateFormatter)
+        object.merge(withJSON: json, dateFormatter: dateFormatter)
         
         return object
     }
@@ -79,12 +79,12 @@ extension NSManagedObjectContext {
         var changes: [NSManagedObject] = []
         changes += inserts.map { json in
             let object = NSEntityDescription.insertNewObject(forEntityName: entity.name!, into: self)
-            object.sync(withJSON: json, dateFormatter: dateFormatter)
+            object.merge(withJSON: json, dateFormatter: dateFormatter)
             return object
         }
 
         changes += updates.map { (object, json) in
-            object.sync(withJSON: json, dateFormatter: dateFormatter)
+            object.merge(withJSON: json, dateFormatter: dateFormatter)
             return object
         }
         
@@ -142,14 +142,12 @@ extension NSManagedObjectContext {
 //        }
 //    }
 //    
-    public func objectIDs(inEntity entityName: String, withAttribute attributeName: String, predicate: NSPredicate? = nil) -> [String: NSManagedObjectID] {
-//        let expression = NSExpressionDescription()
-//        expression.name = "objectID"
-//        expression.expression = NSExpression.expressionForEvaluatedObject()
-//        expression.expressionResultType = .objectIDAttributeType
-
+    
+    /// Return a dictionary
+    public func objectIDs(inEntity entityName: String, indexedByAttributeValueWithName attributeName: String, predicate: NSPredicate? = nil) -> [String: NSManagedObjectID] {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
         fetchRequest.predicate = predicate
+        fetchRequest.returnsObjectsAsFaults = true
         fetchRequest.includesPendingChanges = true
         fetchRequest.returnsDistinctResults = true
         
@@ -175,7 +173,12 @@ extension NSManagedObjectContext {
     /// primary keys. Returns a tuple of updates (an array of `NSManagedObject` and `JSON` tuples), and inserts
     /// (JSON objects that do not have a local counterpart).
     public func detectChanges(inEntity entityName: String, withJSON json: [JSONObject], localPrimaryKey: String, remotePrimaryKey: String, predicate: NSPredicate? = nil) -> (updates: [(NSManagedObject, JSONObject)], inserts: [JSONObject]) {
-        let localObjectIDIndex = objectIDs(inEntity: entityName, withAttribute: localPrimaryKey, predicate: predicate)
+        let localObjectIDIndex = objectIDs(
+            inEntity: entityName,
+            indexedByAttributeValueWithName: localPrimaryKey,
+            predicate: predicate
+        )
+        
         let existingRemoteIDs = Set(localObjectIDIndex.keys)
         
         let remoteObjectIDIndex = Dictionary(json.indexByPrimaryKey(key: remotePrimaryKey))
@@ -185,15 +188,39 @@ extension NSManagedObjectContext {
         let updateObjectIDs = existingRemoteIDs.intersection(remoteObjectIDs)
         
         let inserts: [JSONObject] = newObjectIDs.flatMap { remoteObjectIDIndex[$0] }
-        let updates: [(NSManagedObject, JSONObject)] = updateObjectIDs.flatMap { remoteID in
-            if let json = remoteObjectIDIndex[remoteID],
-                let objectID = localObjectIDIndex[remoteID] {
-                return (object(with: objectID), json)
+        let updates: [(NSManagedObject, JSONObject)] = updateObjectIDs
+            .flatMap { remoteID in
+                if let json = remoteObjectIDIndex[remoteID],
+                    let objectID = localObjectIDIndex[remoteID] {
+                    return (object(with: objectID), json)
+                }
+                
+                return nil
             }
-            
-            return nil
-        }
         
         return (updates, inserts)
+    }
+    
+    /// Detects which primary keys already exist in the database.
+    public func detectChanges(inEntity entityName: String, primaryKeyCollection: Set<String>, localPrimaryKeyName keyName: String, predicate: NSPredicate? = nil) -> (updates: [NSManagedObject], inserts: Set<String>) {
+        let existingObjectIDs = objectIDs(
+            inEntity: entityName,
+            indexedByAttributeValueWithName: keyName,
+            predicate: predicate
+        )
+        
+        let existingRemoteIDs = Set(existingObjectIDs.keys)
+        
+        let newObjectIDs = primaryKeyCollection.subtracting(existingRemoteIDs)
+        let updatedObjectIDs = existingRemoteIDs.intersection(primaryKeyCollection)
+        
+        return (
+            updatedObjectIDs
+                .flatMap { remoteID in
+                    guard let objectID = existingObjectIDs[remoteID] else { return nil }
+                    return object(with: objectID)
+                },
+            newObjectIDs
+        )
     }
 }

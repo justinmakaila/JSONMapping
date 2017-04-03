@@ -11,7 +11,7 @@ extension NSManagedObject: JSONRepresentable, JSONValidator, JSONParser {
         return json[propertyDescription.remotePropertyName]
     }
     
-    /// Syncs `self` with `json` if the JSONObject is valid or
+    /// Merges `self` with `json` if the JSONObject is valid or
     /// if the `force` flag is set.
     ///
     /// - Parameters:
@@ -20,7 +20,7 @@ extension NSManagedObject: JSONRepresentable, JSONValidator, JSONParser {
     ///                      no dates will be processed from the JSON.
     ///     - parent: The parent of the object. Used for inverse relationships.
     ///     - force: Force merge of `json`
-    open func sync(withJSON json: JSONObject, dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil, force: Bool = false) {
+    open func merge(withJSON json: JSONObject, dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil, force: Bool = false) {
         let isValid = self.isValid(json: json) || force
         if isValid {
             willSyncWithJSON(json: json)
@@ -141,11 +141,11 @@ private extension NSManagedObject {
             guard let object = value(forKey: relationship.name) as? NSManagedObject
             else {
                 let object = NSEntityDescription.insertNewObject(forEntityName: destinationEntityName, into: managedObjectContext)
-                _ = object.sync(withJSON: json, dateFormatter: dateFormatter)
+                _ = object.merge(withJSON: json, dateFormatter: dateFormatter)
                 return setValue(object, forKey: relationship.name)
             }
             
-            _ = object.sync(withJSON: json, dateFormatter: dateFormatter)
+            _ = object.merge(withJSON: json, dateFormatter: dateFormatter)
         }
     }
     
