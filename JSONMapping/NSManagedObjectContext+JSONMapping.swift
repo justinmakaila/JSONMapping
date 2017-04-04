@@ -24,11 +24,21 @@ extension Dictionary {
 }
 
 extension NSManagedObjectContext {
+    @discardableResult
     public func upsert(json: JSONObject, inEntity entity: NSEntityDescription, withPrimaryKey primaryKey: String, dateFormatter: JSONDateFormatter? = nil) -> NSManagedObject {
         guard let entityName = entity.name else { fatalError() }
-        
+        return upsert(
+            json: json,
+            inEntityNamed: entityName,
+            predicate: entity.matchingLocalPrimaryKey(keyValue: primaryKey),
+            dateFormatter: dateFormatter
+        )
+    }
+    
+    @discardableResult
+    public func upsert(json: JSONObject, inEntityNamed entityName: String, predicate: NSPredicate? = nil, dateFormatter: JSONDateFormatter? = nil) -> NSManagedObject {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", entity.localPrimaryKeyName, primaryKey)
+        fetchRequest.predicate = predicate
         fetchRequest.fetchLimit = 1
         
         var result: NSManagedObject? = nil
@@ -37,8 +47,10 @@ extension NSManagedObjectContext {
         } catch { }
         
         /// Fetch or create the object
-        let object = result
-            ?? NSEntityDescription.insertNewObject(forEntityName: entityName, into: self)
+        let object = result ?? NSEntityDescription.insertNewObject(
+            forEntityName: entityName,
+            into: self
+        )
         
         object.merge(withJSON: json, dateFormatter: dateFormatter)
         

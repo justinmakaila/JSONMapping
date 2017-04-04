@@ -41,7 +41,7 @@ extension NSManagedObject: JSONRepresentable, JSONValidator, JSONParser {
     ///     - excludeKeys: The names of properties to be removed. Should be the name of the property in your data model,
     ///                    not the remote property name.
     ///
-    public func toJSON(dateFormatter: JSONDateFormatter, relationshipType: RelationshipType = .embedded, parent: NSManagedObject? = nil, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
+    public func toJSON(relationshipType: RelationshipType = .embedded, excludeKeys: Set<String> = [], includeNilValues: Bool = true, dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil) -> JSONObject {
         return jsonObjectForProperties(
             entity.remoteProperties,
             dateFormatter: dateFormatter,
@@ -61,9 +61,10 @@ extension NSManagedObject: JSONRepresentable, JSONValidator, JSONParser {
     ///     - excludeKeys: The names of properties to be removed. Should be the name of the property in your data model,
     ///                    not the remote property name.
     ///
-    public func toChangedJSON(dateFormatter: JSONDateFormatter, relationshipType: RelationshipType = .embedded, parent: NSManagedObject? = nil, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
+    public func toChangedJSON(relationshipType: RelationshipType = .embedded, excludeKeys: Set<String> = [], includeNilValues: Bool = true, dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil) -> JSONObject {
         let changedPropertyKeys: Set<String> = Set(self.changedValues().keys)
-        let remoteProperties = entity.remoteProperties.filter { changedPropertyKeys.contains($0.name) }
+        let remoteProperties = entity.remoteProperties
+            .filter { changedPropertyKeys.contains($0.name) }
         
         return jsonObjectForProperties(
             remoteProperties,
@@ -88,7 +89,11 @@ private extension NSManagedObject {
         entity.remoteAttributes
             .forEach { attribute in
                 if let jsonValue = parseJSON(json: json, propertyDescription: attribute) {
-                    let attributeValue = attribute.value(fromJSONValue: jsonValue, dateFormatter: dateFormatter)
+                    let attributeValue = attribute.value(
+                        fromJSONValue: jsonValue,
+                        dateFormatter: dateFormatter
+                    )
+                    
                     if let attributeValue = attributeValue {
                         setValue(attributeValue, forKey: attribute.name)
                     } else if attribute.isOptional {
@@ -104,7 +109,12 @@ private extension NSManagedObject {
                 if let jsonValue = parseJSON(json: json, propertyDescription: relationship) {
                     if relationship.isToMany {
                         if let collection = jsonValue as? [JSONObject] {
-                            sync(toManyRelationship: relationship, withJSON: collection, dateFormatter: dateFormatter, parent: parent)
+                            sync(
+                                toManyRelationship: relationship,
+                                withJSON: collection,
+                                dateFormatter: dateFormatter,
+                                parent: parent
+                            )
                         } else if let primaryKeyCollection = jsonValue as? [String] {
                             /// TODO: Find and insert objects via primary key
                         } else if relationship.isOptional {
@@ -112,7 +122,11 @@ private extension NSManagedObject {
                         }
                     } else {
                         if let object = jsonValue as? JSONObject {
-                            sync(toOneRelationship: relationship, withJSON: object, dateFormatter: dateFormatter)
+                            sync(
+                                toOneRelationship: relationship,
+                                withJSON: object,
+                                dateFormatter: dateFormatter
+                            )
                         } else if let primaryKey = jsonValue as? String {
                             /// TODO Find and insert an object via primary key
                         } else if relationship.isOptional {
@@ -206,7 +220,7 @@ private extension NSManagedObject {
     ///     - relationshipType: Flag indicating what type of relationships to use.
     ///     - excludeKeys: The names of properties to be removed. Should be the name of the property in your data model, not the remote property name.
     ///
-    func jsonObjectForProperties(_ properties: [NSPropertyDescription], dateFormatter: JSONDateFormatter, parent: NSManagedObject? = nil, relationshipType: RelationshipType = .embedded, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
+    func jsonObjectForProperties(_ properties: [NSPropertyDescription], dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil, relationshipType: RelationshipType = .embedded, excludeKeys: Set<String> = [], includeNilValues: Bool = true) -> JSONObject {
         var jsonObject = JSONObject()
         
         properties
@@ -243,14 +257,14 @@ private extension NSManagedObject {
     }
     
     /// Transforms an object to JSON, using the supplied `relationshipType`.
-    func json(attributesForObject object: NSManagedObject, dateFormatter: JSONDateFormatter, parent: NSManagedObject?, relationshipType: RelationshipType, includeNilValues: Bool = true) -> Any {
+    func json(attributesForObject object: NSManagedObject, dateFormatter: JSONDateFormatter?, parent: NSManagedObject?, relationshipType: RelationshipType, includeNilValues: Bool = true) -> Any {
         switch relationshipType {
         case .embedded:
             return object.toJSON(
-                dateFormatter: dateFormatter,
                 relationshipType: relationshipType,
-                parent: parent,
-                includeNilValues: includeNilValues
+                includeNilValues: includeNilValues,
+                dateFormatter: dateFormatter,
+                parent: parent
             )
         case .reference:
             return object.primaryKey ?? NSNull()
@@ -283,7 +297,7 @@ private extension NSManagedObject {
     }
     
     /// Returns the JSON value of `relationship` if it's `attributeType`
-    func json(valueForRelationship relationship: NSRelationshipDescription, relationshipType: RelationshipType, dateFormatter: JSONDateFormatter,  includeNilValues: Bool = false) -> Any? {
+    func json(valueForRelationship relationship: NSRelationshipDescription, relationshipType: RelationshipType, dateFormatter: JSONDateFormatter? = nil,  includeNilValues: Bool = false) -> Any? {
         let relationshipMappingType = relationship.relationshipMapping ?? relationshipType
         
         /// If there are relationships at `localRelationshipName`

@@ -38,7 +38,7 @@ final class NSManagedObjectContext_JSONMappingSpec: QuickSpec {
                 
                 it("can return an index of NSManagedObjectIDs by given String attributes.") {
                     let user = User(context: managedObjectContext)
-                    user.sync(withJSON: userJSONCollection.first!, dateFormatter: dateFormatter)
+                    user.merge(withJSON: userJSONCollection.first!, dateFormatter: dateFormatter)
                 }
                 
                 context("detecting which primary keys in a given collection need to be updated or inserted") {
@@ -57,7 +57,7 @@ final class NSManagedObjectContext_JSONMappingSpec: QuickSpec {
                     
                     it("detects updates") {
                         let user = User(context: managedObjectContext)
-                        user.sync(
+                        user.merge(
                             withJSON: userJSONCollection.first!,
                             dateFormatter: dateFormatter
                         )

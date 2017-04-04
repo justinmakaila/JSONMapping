@@ -68,10 +68,8 @@ public enum RelationshipType: Equatable {
 
 
 public protocol JSONRepresentable {
-    func toJSON(dateFormatter: JSONDateFormatter, relationshipType: RelationshipType, parent: NSManagedObject?, excludeKeys: Set<String>, includeNilValues: Bool) -> JSONObject
-    
-    func toChangedJSON(dateFormatter: JSONDateFormatter, relationshipType: RelationshipType, parent: NSManagedObject?, excludeKeys: Set<String>, includeNilValues: Bool) -> JSONObject
-    
+    func toJSON(relationshipType: RelationshipType, excludeKeys: Set<String>, includeNilValues: Bool, dateFormatter: JSONDateFormatter?, parent: NSManagedObject?) -> JSONObject
+    func toChangedJSON(relationshipType: RelationshipType, excludeKeys: Set<String>, includeNilValues: Bool, dateFormatter: JSONDateFormatter?, parent: NSManagedObject?) -> JSONObject
     func merge(withJSON json: JSONObject, dateFormatter: JSONDateFormatter?, parent: NSManagedObject?, force: Bool)
 }
 
@@ -79,12 +77,14 @@ public protocol JSONRepresentable {
 public protocol JSONInitializable { }
 
 extension JSONInitializable where Self: NSManagedObject, Self: JSONRepresentable {
+    @available(iOS 10.0, *)
+    public init(context: NSManagedObjectContext, json: JSONObject, dateFormatter: JSONDateFormatter? = nil) {
+        self.init(context: context)
+        merge(withJSON: json, dateFormatter: dateFormatter)
+    }
+    
     public init(entity entityDescription: NSEntityDescription, insertInto context: NSManagedObjectContext, json: JSONObject, dateFormatter: JSONDateFormatter? = nil) {
         self.init(entity: entityDescription, insertInto: context)
-        
-        merge(
-            withJSON: json,
-            dateFormatter: dateFormatter
-        )
+        merge(withJSON: json, dateFormatter: dateFormatter)
     }
 }

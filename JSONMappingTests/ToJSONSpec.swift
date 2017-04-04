@@ -44,7 +44,7 @@ class ToJSONSpec: QuickSpec {
             }
             
             it ("can exclude nil values") {
-                let userJSON = user.toJSON(dateFormatter: dateFormatter, includeNilValues: false)
+                let userJSON = user.toJSON(includeNilValues: false, dateFormatter: dateFormatter)
                 
                 expect(userJSON.count).to(equal(4))
                 expect(userJSON["name"] as? String).to(equal(user.name))
@@ -62,10 +62,10 @@ class ToJSONSpec: QuickSpec {
                 user.gender = .male
                 
                 let userJSON = user.toJSON(
-                    dateFormatter: dateFormatter,
                     excludeKeys: [
                         "birthdate"
-                    ]
+                    ],
+                    dateFormatter: dateFormatter
                 )
                 
                 expect(userJSON.count).to(equal(user.entity.properties.count - 1))
@@ -109,7 +109,7 @@ class ToJSONSpec: QuickSpec {
                 it ("can exclude all relationships") {
                     let attributeCount = user.entity.attributes.count
                     
-                    let userJSON = user.toJSON(dateFormatter: dateFormatter, relationshipType: .none)
+                    let userJSON = user.toJSON(relationshipType: .none, dateFormatter: dateFormatter)
                     
                     expect(userJSON.count).to(equal(attributeCount))
                     expect(userJSON["friends"]).to(beNil())
@@ -117,7 +117,7 @@ class ToJSONSpec: QuickSpec {
                 }
                 
                 it ("can embed all relationships") {
-                    let userJSON = user.toJSON(dateFormatter: dateFormatter, relationshipType: .embedded)
+                    let userJSON = user.toJSON(relationshipType: .embedded, dateFormatter: dateFormatter)
                     
                     expect(userJSON["significantOther"]).toNot(beNil())
                     expect(userJSON["friends"]).toNot(beNil())
@@ -125,7 +125,7 @@ class ToJSONSpec: QuickSpec {
                 }
                 
                 it ("can embed relationships via primary key") {
-                    let userJSON = user.toJSON(dateFormatter: dateFormatter, relationshipType: .reference)
+                    let userJSON = user.toJSON(relationshipType: .reference, dateFormatter: dateFormatter)
                     
                     expect(userJSON["significantOther"]).toNot(beNil())
                     expect(userJSON["significantOther"] as? String).to(equal("Paige"))
@@ -136,9 +136,14 @@ class ToJSONSpec: QuickSpec {
                 }
                 
                 it ("can embed relationships using a custom strategy") {
-                    let userJSON = user.toChangedJSON(dateFormatter: dateFormatter, relationshipType: .custom({ object in
+                    let relationshipType: RelationshipType = .custom({ object in
                         return RelationshipWrapper(primaryKey: object.primaryKey as! String)
-                    }))
+                    })
+                    
+                    let userJSON = user.toChangedJSON(
+                        relationshipType: relationshipType,
+                        dateFormatter: dateFormatter
+                    )
                     
                     let significantOtherValue = RelationshipWrapper(primaryKey: "Paige")
                     let friendValue = RelationshipWrapper(primaryKey: "Finn")
@@ -151,7 +156,7 @@ class ToJSONSpec: QuickSpec {
                 }
                 
                 it ("will not embed parent relationships in children") {
-                    let userJSON = user.toJSON(dateFormatter: dateFormatter, relationshipType: .embedded)
+                    let userJSON = user.toJSON(relationshipType: .embedded, dateFormatter: dateFormatter)
                     
                     let childJSON = userJSON["significantOther"] as? JSONObject
                     
