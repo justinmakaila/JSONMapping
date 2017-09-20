@@ -21,16 +21,14 @@ extension NSManagedObject: JSONRepresentable, JSONValidator, JSONParser {
     ///     - parent: The parent of the object. Used for inverse relationships.
     ///     - force: Force merge of `json`
     open func merge(withJSON json: JSONObject, dateFormatter: JSONDateFormatter? = nil, parent: NSManagedObject? = nil, force: Bool = false) {
-        let isValid = self.isValid(json: json) || force
-        if isValid {
+        if isValid(json: json) || force {
             willSyncWithJSON(json: json)
             sync(scalarValuesWithJSON: json, dateFormatter: dateFormatter)
             sync(relationshipsWithJSON: json, dateFormatter: dateFormatter, parent: parent)
             didSyncWithJSON(success: true)
-            return
+        } else {
+            didSyncWithJSON(success: false)
         }
-        
-        didSyncWithJSON(success: false)
     }
     
     /// Serializes a `NSManagedObject` to a JSONObject, using the remote properties.

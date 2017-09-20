@@ -2,11 +2,11 @@
 
 # The Swift (and Objective-C) testing framework.
 #
-github "Quick/Quick" ~> 0.10
+github "Quick/Quick"
 
 
 # A Matcher Framework for Swift and Objective-C
 #
-github "Quick/Nimble" ~> 5.0
+github "Quick/Nimble"
 
-github "wellth-app/CoreDataStack" ~> 1.0
+github "wellth-app/CoreDataStack"
